@@ -25,7 +25,7 @@ def test_robot_arm():
    
     """
 
-    arm = TwolinkArm(q=[0, 0], make_plot=True)
+    arm = TwolinkArm(q=[0, 0], make_plot=False)
     pos = arm.get_pos()
     assert pos[0] == 0
     assert pos[1] == 6
