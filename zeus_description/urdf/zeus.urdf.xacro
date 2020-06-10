@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<robot name="zeus" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="width" value="1" />
+  <xacro:property name="length" value="2" />
+  <xacro:property name="height" value="0.5" />
+
+ <!-- Base Link -->
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 ${height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} ${height}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 ${height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} ${height}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+  </link>
+</robot>
