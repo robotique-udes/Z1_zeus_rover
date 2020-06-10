@@ -12,9 +12,12 @@ branches:
   only:
     - master
 
+# Install dependencies
 addons:
   apt:
     packages:
+      - x11-utils
+      - libxkbcommon-x11-0
       - doxygen
 
 # command to run tests
