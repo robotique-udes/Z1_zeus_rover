@@ -10,7 +10,8 @@ sudo: false
 
 branches:
   only:
-    - master
+  - gh-pages
+  - /.*/
 
 # Install dependencies
 addons:
