@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
-	<arg name="paused" default="true"/>
+	<arg name="paused" default="false"/>
 	<arg name="use_sim_time" default="true"/>
 	<arg name="gui" default="true"/>
 	<arg name="headless" default="false"/>
 	<arg name="debug" default="false"/>
-    <arg name="world" default="$(find mars)/worlds/mars.world"/>
+    <arg name="world" default="$(find zeus_gazebo)/worlds/mars.world"/>
 
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">

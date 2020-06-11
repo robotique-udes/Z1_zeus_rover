@@ -2,12 +2,24 @@
 
 <launch>
 
-  <include file="$(find mars)/launch/mars_env_only.launch">
+  <include file="$(find zeus_gazebo)/launch/mars_env_only.launch">
   </include>
 
   <!-- Convert an xacro and put on parameter server -->
   <param name="robot_description" command="$(find xacro)/xacro.py $(find zeus_description)/urdf/zeus.urdf.xacro" />
 
   <!-- Spawn a robot into Gazebo -->
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model zeus" />
+  <node name="zeus_spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model zeus" />
+
+  <!-- Send Twist commands -->
+  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>
+
+  <!-- send fake joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="False"/>
+  </node>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
 </launch>

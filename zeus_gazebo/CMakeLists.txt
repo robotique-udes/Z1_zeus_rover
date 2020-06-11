@@ -10,7 +10,9 @@ project(zeus_gazebo)
 find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(catkin REQUIRED COMPONENTS
+  gazebo_ros
+)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -104,6 +106,7 @@ catkin_package(
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
+catkin_package(DEPENDS gazebo_ros)
 
 ###########
 ## Build ##
@@ -187,6 +190,18 @@ include_directories(
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+
+install(DIRECTORY launch 
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+
+install(DIRECTORY models/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models
+)
+install(DIRECTORY worlds/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/worlds
+)
 
 #############
 ## Testing ##
