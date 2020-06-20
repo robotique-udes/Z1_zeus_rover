@@ -46,23 +46,23 @@ class RoboticArm() :
               
         J = np.zeros((3,5))
         
-        J[0,0] =  
-        J[0,1] =  
-        J[0,2] =         
-        J[0,3] =  
-        J[0,4] =  
+        J[0,0] = 0
+        J[0,1] = 0
+        J[0,2] = 0       
+        J[0,3] = 0
+        J[0,4] = 0
         
-        J[1,0] =  
-        J[1,1] =  
-        J[1,2] =         
-        J[1,3] =  
-        J[1,4] =     
+        J[1,0] = 0
+        J[1,1] = 0
+        J[1,2] = 0       
+        J[1,3] = 0
+        J[1,4] = 0   
         
-        J[2,0] =  
-        J[2,1] =  
-        J[2,2] =         
-        J[2,3] =  
-        J[2,4] =     
+        J[2,0] = 0
+        J[2,1] = 0 
+        J[2,2] = 0        
+        J[2,3] = 0
+        J[2,4] = 0   
   
         
         return J
@@ -250,7 +250,7 @@ class RoboticArm() :
         """
         
         # TODO : Code that reads current robot configuration for all joint motors
-        q = 
+        q = 0
     
         return q
     
