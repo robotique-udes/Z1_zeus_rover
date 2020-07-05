@@ -2,6 +2,9 @@
 
 <launch>
 
+  <!-- Remap commands to husky -->
+  <remap from="husky_velocity_controller/cmd_vel" to="cmd_vel"/>
+
   <include file="$(find zeus_gazebo)/launch/mars_env_only.launch">
   </include>
 
