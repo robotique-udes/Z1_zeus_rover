@@ -5,9 +5,13 @@
   <!-- Send Twist commands -->
   <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>
 
+  <!-- Setup twist mux -->
   <node pkg="twist_mux" type="twist_mux" name="twist_mux">
     <rosparam command="load" file="$(find zeus_control)/config/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="husky_velocity_controller/cmd_vel"/>
   </node>-->
+
+  <!-- Launch rqt interface -->
+  <node name = "zeus_rqt" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find zeus_control)/config/zeus_teleop.perspective"/>
 
 </launch>
