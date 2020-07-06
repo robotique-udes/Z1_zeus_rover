@@ -11,6 +11,9 @@
     <remap from="cmd_vel_out" to="husky_velocity_controller/cmd_vel"/>
   </node>-->
 
+  <!-- Launch sensor monitoring -->
+  <include file="$(find zeus_control)/launch/sensor_monitor.launch" />
+
   <!-- Launch rqt interface -->
   <node name = "zeus_rqt" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find zeus_control)/config/zeus_teleop.perspective"/>
 
