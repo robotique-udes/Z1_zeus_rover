@@ -31,7 +31,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/base_link.STL" />
+          filename="package://zeus_arm/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -45,7 +45,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/base_link.STL" />
+          filename="package://zeus_arm/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -71,7 +71,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/base_plate.STL" />
+          filename="package://zeus_arm/meshes/base_plate.STL" />
       </geometry>
       <material
         name="">
@@ -85,7 +85,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/base_plate.STL" />
+          filename="package://zeus_arm/meshes/base_plate.STL" />
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/arm.STL" />
+          filename="package://zeus_arm/meshes/arm.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/arm.STL" />
+          filename="package://zeus_arm/meshes/arm.STL" />
       </geometry>
     </collision>
   </link>
@@ -183,7 +183,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/forearm.STL" />
+          filename="package://zeus_arm/meshes/forearm.STL" />
       </geometry>
       <material
         name="">
@@ -197,7 +197,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/forearm.STL" />
+          filename="package://zeus_arm/meshes/forearm.STL" />
       </geometry>
     </collision>
   </link>
@@ -242,7 +242,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/wrist.STL" />
+          filename="package://zeus_arm/meshes/wrist.STL" />
       </geometry>
       <material
         name="">
@@ -256,7 +256,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/wrist.STL" />
+          filename="package://zeus_arm/meshes/wrist.STL" />
       </geometry>
     </collision>
   </link>
@@ -301,7 +301,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/gripper.STL" />
+          filename="package://zeus_arm/meshes/gripper.STL" />
       </geometry>
       <material
         name="">
@@ -315,7 +315,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://zeus_control/meshes/gripper.STL" />
+          filename="package://zeus_arm/meshes/gripper.STL" />
       </geometry>
     </collision>
   </link>

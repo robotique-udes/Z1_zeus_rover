@@ -1,3 +1,4 @@
+<?xml version='1.0'?>
 <launch>
 
 	<!-- Launch Gazebo with an empty world -->
@@ -9,7 +10,7 @@
 	</include>
 
 	<!-- Load the description for the robot -->
-	<param name="robot_description" command="cat '$(find zeus_control)/urdf/zeus_control.urdf'" />
+	<param name="robot_description" command="cat '$(find zeus_arm)/urdf/zeus_arm.urdf'" />
 
 	<!-- Spawn the robot in Gazebo -->
 	<node name="spawn_robot_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
@@ -24,7 +25,7 @@
                       -J joint_5 0" />
 
 	<!-- Load controller configuration file -->
-	<rosparam file="$(find zeus_control)/config/joint_velocity_controllers.yaml" command="load"/>
+	<rosparam file="$(find zeus_arm)/config/joint_velocity_controllers.yaml" command="load"/>
 
 	<node  name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" 
 	 ns="/zeus_arm" args="joint_1_velocity_controller 
