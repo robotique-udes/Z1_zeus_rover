@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+
+<launch>
+
+  <node name="sensor_monitor" pkg="zeus_control" type="sensor_monitor.py" output="screen" >
+    <rosparam command="load" 
+              file="$(find zeus_control)/config/sensors.yaml" />
+  </node>
+
+  <node 
+        pkg="diagnostic_aggregator" type="aggregator_node"
+        name="diag_agg" output="screen" >
+    <rosparam command="load" 
+              file="$(find zeus_control)/config/aggregator.yaml" />
+  </node>
+
+</launch>

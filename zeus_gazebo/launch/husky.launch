@@ -2,9 +2,6 @@
 
 <launch>
 
-  <!-- Remap commands to husky -->
-  <remap from="husky_velocity_controller/cmd_vel" to="cmd_vel"/>
-
   <include file="$(find zeus_gazebo)/launch/mars_env_only.launch">
   </include>
 
@@ -17,8 +14,5 @@
     <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
     <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
   </include>
-
-  <!-- Send Twist commands -->
-  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>
 
 </launch>
