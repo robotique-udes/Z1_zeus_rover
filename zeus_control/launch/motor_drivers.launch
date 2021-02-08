@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- Launch socketcan bridge node
+  <node pkg="socketcan_bridge" name="socketcan_bridge_node" type="socketcan_bridge_node">
+  </node> -->
+
+  <!-- Launch driver for each motor -->
+  <group ns="ros_talon1">
+    <param name="motor_nb" value="1" />
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon1" output="screen">  
+    </node>
+  </group>
+
+  <group ns="ros_talon2">
+    <param name="motor_nb" value="2" />
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon2" output="screen">
+    </node>
+  </group>
+
+  <group ns="ros_talon3">
+    <param name="motor_nb" value="3" />
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon3" output="screen">
+    </node>
+  </group>
+
+  <group ns="ros_talon4">
+    <param name="motor_nb" value="4" />
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon4" output="screen">
+    </node>
+  </group>
+
+  <group ns="ros_talon5">
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon5" output="screen">
+      <param name="motor_nb" value="5" />
+    </node>
+  </group>
+
+  <group ns="ros_talon6">
+    <node pkg="ros_talon" type="direct_drive" name="ros_talon6" output="screen">
+      <param name="motor_nb" value="6" />
+    </node>
+  </group>
+</launch>
