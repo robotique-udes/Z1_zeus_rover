@@ -2,44 +2,33 @@
 
 <launch>
 
-  <!-- Launch socketcan bridge node
+  <!-- Launch socketcan bridge node -->
   <node pkg="socketcan_bridge" name="socketcan_bridge_node" type="socketcan_bridge_node">
-  </node> -->
+  </node>
 
   <!-- Launch driver for each motor -->
-  <group ns="ros_talon1">
+  <node pkg="ros_talon" type="direct_drive1" name="motor1" output="screen">  
     <param name="motor_nb" value="1" />
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon1" output="screen">  
-    </node>
-  </group>
+  </node>
 
-  <group ns="ros_talon2">
+  <node pkg="ros_talon" type="direct_drive2" name="motor2" output="screen">
     <param name="motor_nb" value="2" />
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon2" output="screen">
-    </node>
-  </group>
+  </node> 
 
-  <group ns="ros_talon3">
+  <node pkg="ros_talon" type="direct_drive3" name="motor3" output="screen">
     <param name="motor_nb" value="3" />
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon3" output="screen">
-    </node>
-  </group>
+  </node> 
 
-  <group ns="ros_talon4">
+  <node pkg="ros_talon" type="direct_drive4" name="motor4" output="screen">
     <param name="motor_nb" value="4" />
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon4" output="screen">
-    </node>
-  </group>
+  </node> 
 
-  <group ns="ros_talon5">
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon5" output="screen">
-      <param name="motor_nb" value="5" />
-    </node>
-  </group>
+  <node pkg="ros_talon" type="direct_drive5" name="motor5" output="screen">
+    <param name="motor_nb" value="5" />
+  </node> 
 
-  <group ns="ros_talon6">
-    <node pkg="ros_talon" type="direct_drive" name="ros_talon6" output="screen">
-      <param name="motor_nb" value="6" />
-    </node>
-  </group>
+  <node pkg="ros_talon" type="direct_drive6" name="motor6" output="screen">
+    <param name="motor_nb" value="6" />
+  </node> 
+
 </launch>
