@@ -27,7 +27,8 @@ class LowLevelControlNode():
         '''
         rospy.init_node('twist2cmd', anonymous=False)
         rospy.on_shutdown(self.on_shutdown)
-        self.cmd = 0
+        self.l_cmd = 0
+        self.r_cmd = 0
 
         # Init publishers
         self.m1_pub = rospy.Publisher('/ros_talon1/motor_percent', Int32, queue_size=10)
@@ -53,16 +54,24 @@ class LowLevelControlNode():
         msg: Twist
             Twist message
         '''
-        # For now, only use linear speed
-        cmd = msg.linear.x * 75
+        # Send same command to all motors of same side
+        l_cmd = msg.linear.x*75 + msg.angular.z*30
+        r_cmd = msg.linear.x*75 - msg.angular.z*30
 
-        # Limit speed at 40%
+        # Limit speed at 60%
+        self.l_cmd = self.limit_speed(l_cmd, max_val=50)
+        self.r_cmd = self.limit_speed(r_cmd, max_val=50)
+
+
+    def limit_speed(self, cmd, max_val=60):
+        '''
+        Limits command at a certain value
+        '''
         if cmd > 0:
-            cmd = min(cmd, 40)
+            cmd = min(cmd, max_val)
         else:
-            cmd = max(cmd, -40)
-        
-        self.cmd = cmd
+            cmd = max(cmd, -max_val)
+        return cmd
 
 
     def send_cmd_callback(self, evt):
@@ -76,19 +85,23 @@ class LowLevelControlNode():
         '''
         Publishes commands
         '''
-        self.m1_pub.publish(self.cmd)
-        self.m2_pub.publish(self.cmd)
-        self.m3_pub.publish(self.cmd)
-        self.m4_pub.publish(self.cmd)
-        self.m5_pub.publish(self.cmd)
-        self.m6_pub.publish(self.cmd)
+        # Left wheels
+        self.m1_pub.publish(self.l_cmd)
+        self.m3_pub.publish(self.l_cmd)
+        self.m5_pub.publish(self.l_cmd)
+        
+        # Right wheels
+        self.m2_pub.publish(self.r_cmd)
+        self.m4_pub.publish(self.r_cmd)
+        self.m6_pub.publish(self.r_cmd)
 
 
     def on_shutdown(self):
         '''
         Set commands to 0 at shutdown
         '''
-        self.cmd = 0
+        self.l_cmd = 0
+        self.r_cmd = 0
         self.send_cmd()
 
 
