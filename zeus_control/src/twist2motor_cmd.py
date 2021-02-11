@@ -18,6 +18,7 @@ ROS Node to go from a Twist to commands for the 6 robot motors
 import rospy
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Twist
+from ddynamic_reconfigure_python.ddynamic_reconfigure import DDynamicReconfigure
 
 
 class LowLevelControlNode():
@@ -44,6 +45,42 @@ class LowLevelControlNode():
         # Subscribe to joystick
         self.twist_sub = rospy.Subscriber('zeus_control/cmd_vel', Twist, self.twist_callback)
 
+        # Initialize configurable params
+        # Create a DynamicDynamicReconfigure Server
+        self.ddr = DDynamicReconfigure("twist2cmd")
+
+        # Add variables to ddr(name, description, default value, min, max, edit_method)        
+        # Model Settings
+        self.ddr.add_variable("linear_gain", "float", 0.5, 0, 1)
+        self.ddr.add_variable("angular_gain", "float", 0.5, -1, 1)
+        self.ddr.add_variable("max_motor_cmd", "int", 60, 1, 100)
+
+        # Start Server
+        self.ddr.start(self.dynamic_reconfigure_callback)
+        rospy.sleep(1)
+
+
+    def dynamic_reconfigure_callback(self, config, level):
+        '''
+        Updates parameters value when changed by the user.
+        ----------
+        Parameters
+        ----------
+        config: dict
+            Keys are param names and values are param values
+        level: Unused
+        -------
+        Returns
+        -------
+        config: dict
+            Keys are param names and values are param values
+        '''
+        # Update variables
+        var_names = self.ddr.get_variable_names()
+        for var_name in var_names:
+            self.__dict__[var_name] = config[var_name]
+        return config
+
 
     def twist_callback(self, msg):
         '''
@@ -55,12 +92,12 @@ class LowLevelControlNode():
             Twist message
         '''
         # Send same command to all motors of same side
-        l_cmd = msg.linear.x*75 + msg.angular.z*30
-        r_cmd = msg.linear.x*75 - msg.angular.z*30
+        l_cmd = msg.linear.x*75*self.linear_gain + msg.angular.z*30*self.angular_gain
+        r_cmd = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain
 
         # Limit speed at 60%
-        self.l_cmd = self.limit_speed(l_cmd, max_val=50)
-        self.r_cmd = self.limit_speed(r_cmd, max_val=50)
+        self.l_cmd = self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
+        self.r_cmd = self.limit_speed(r_cmd, max_val=self.max_motor_cmd)
 
 
     def limit_speed(self, cmd, max_val=60):
