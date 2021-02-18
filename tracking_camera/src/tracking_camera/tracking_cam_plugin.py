@@ -87,11 +87,9 @@ class TrackingCamMain():
                 yaw = motor.present_position 
             elif motor.name == "pitch":
                 pitch = motor.present_position 
-            elif motor.name == "roll":
-                roll = motor.present_position 
 
-        self.view.update_motors([yaw, pitch, roll])
-        self.motor_control.update_motors([yaw, pitch, roll])
+        self.view.update_motors([yaw, pitch])
+        self.motor_control.update_motors([yaw, pitch])
 
     def go_home(self):
         self.change_mode(MANUAL)
@@ -101,9 +99,9 @@ class TrackingCamMain():
     def enable_motors(self, enable):
         self.motor_control.enable_motors(enable)
 
-    def move_axis(self, axis, value, limits):
+    def move_axis(self, axis, motor_id, value, limits):
         self.change_mode(MANUAL)
-        self.motor_control.move_axis(axis, value, limits)
+        self.motor_control.move_axis(axis, motor_id, value, limits)
 
 
 

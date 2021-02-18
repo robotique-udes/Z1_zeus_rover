@@ -33,23 +33,19 @@ class TrackingCamWidget(QtWidgets.QWidget):
 
         self.yaw_slider.valueChanged[int].connect(self.slider_callback_yaw)
         self.pitch_slider.valueChanged[int].connect(self.slider_callback_pitch)
-        self.roll_slider.valueChanged[int].connect(self.slider_callback_roll)
         
         self.val_yaw.setText(str(0))
         self.val_pitch.setText(str(0)) 
-        self.val_roll.setText(str(0))
 
     def update_motors(self, angles):
         self.val_yaw.setText(str((angles[0]-YAW_HOME)*180/2048))
         self.val_pitch.setText(str((angles[1]-PITCH_HOME)*180/2048))
-        self.val_roll.setText(str((angles[2]-ROLL_HOME)*180/2048))
 
     def home_callback(self):
         self.change_mode(MANUAL)
         self.main.go_home()
         self.yaw_slider.setValue(50)
         self.pitch_slider.setValue(50)
-        self.roll_slider.setValue(50)
 
     def change_mode(self, mode):
         if mode == MANUAL:
@@ -70,13 +66,11 @@ class TrackingCamWidget(QtWidgets.QWidget):
     
     def slider_callback_yaw(self, value):
         self.change_mode(MANUAL)
-        self.main.move_axis(1, value-50, [-50, 50])    
+        self.main.move_axis(0, 3, value-50, [-100, 100])    
 
     def slider_callback_pitch(self, value):
         self.change_mode(MANUAL)
-        self.main.move_axis(2, value-50, [-50, 50])  
+        self.main.move_axis(1, 2, value-50, [-100, 100])  
 
-    def slider_callback_roll(self, value):
-        self.change_mode(MANUAL)
-        self.main.move_axis(3, value-50, [-50, 50])   
+
 

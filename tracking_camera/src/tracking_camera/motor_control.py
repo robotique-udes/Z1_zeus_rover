@@ -23,12 +23,11 @@ class MotorControl():
             self.timer = rospy.Timer(rospy.Duration(2), self.connect)
 
         # Set max speed
-        self.call_motor_cmd(1, "Position_P_Gain", 300)
-        self.call_motor_cmd(2, "Position_P_Gain", 350)
-        self.call_motor_cmd(3, "Position_P_Gain", 400)
+        self.call_motor_cmd(0, 3, "Position_P_Gain", 300)
+        self.call_motor_cmd(1, 2, "Position_P_Gain", 350)
         
-        self.angles = [0, 0, 0]
-        self.limits = [YAW, PITCH, ROLL]
+        self.angles = [0, 0]
+        self.limits = [YAW, PITCH]
 
     def connect(self, event):
         try:
@@ -49,36 +48,34 @@ class MotorControl():
         if self.motors == 0:
             return
 
-        self.call_motor_cmd(1, "Torque_Enable", enable)
-        self.call_motor_cmd(2, "Torque_Enable", enable)
         self.call_motor_cmd(3, "Torque_Enable", enable)
+        self.call_motor_cmd(2, "Torque_Enable", enable)
 
     def go_home(self):
         if self.motors == 0:
             return
 
-        self.call_motor_cmd(1, "Goal_Position", YAW_HOME)  
-        self.call_motor_cmd(2, "Goal_Position", PITCH_HOME)  
-        self.call_motor_cmd(3, "Goal_Position", ROLL_HOME)
+        self.call_motor_cmd(0, 3, "Goal_Position", YAW_HOME)  
+        self.call_motor_cmd(1, 2, "Goal_Position", PITCH_HOME)  
 
-    def move_axis(self, axis, value, limits):
+    def move_axis(self, axis, motor_id, value, limits):
         if self.motors == 0:
             return
 
-        self.call_motor_cmd(axis, "Goal_Position", value*2048/(limits[1]-limits[0]) + HOME[axis-1])
+        self.call_motor_cmd(axis, motor_id, "Goal_Position", value*RANGE/(limits[1]-limits[0]) + HOME[axis-1])
         
-    def move_relative(self, axis, value):
+    def move_relative(self, axis, motor_id, value):
         if self.motors == 0:
             return
 
-        if self.limits[axis-1][1] < value+ self.angles[axis-1] or value+ self.angles[axis-1] < self.limits[axis-1][0]:
+        if self.limits[axis][1] < value+ self.angles[axis] or value+ self.angles[axis] < self.limits[axis][0]:
             print("Out of range")
             pass
         else:
-            self.call_motor_cmd(axis, "Goal_Position", value + self.angles[axis-1])
+            self.call_motor_cmd(axis, motor_id, "Goal_Position", value + self.angles[axis])
 
     # Call motor service
-    def call_motor_cmd(self, id, cmd, val):
+    def call_motor_cmd(self, axis, id, cmd, val):
         if self.motors == 0:
             return
 

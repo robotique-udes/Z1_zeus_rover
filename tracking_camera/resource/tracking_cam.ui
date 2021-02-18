@@ -16,7 +16,7 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="9" column="1">
+     <item row="8" column="1">
       <widget class="QPushButton" name="home_btn">
        <property name="text">
         <string>Home</string>
@@ -54,43 +54,12 @@
        </item>
       </layout>
      </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Roll</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="2">
+     <item row="8" column="2">
       <widget class="QPushButton" name="disable_btn">
        <property name="text">
         <string>Disable</string>
        </property>
       </widget>
-     </item>
-     <item row="7" column="1" colspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QSlider" name="roll_slider">
-         <property name="sliderPosition">
-          <number>50</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="val_roll">
-         <property name="maximumSize">
-          <size>
-           <width>40</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </item>
      <item row="3" column="1" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout">

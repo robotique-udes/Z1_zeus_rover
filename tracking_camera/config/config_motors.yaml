@@ -2,14 +2,16 @@
 # Control table item has to be set Camel_Case and not included whitespace
 # You are supposed to set at least Dynamixel ID
 # This example is compatible with Dynamixel using protocol 2.0
+
+
 yaw:
-  ID: 1
+  ID: 3
   Return_Delay_Time: 0
   Operating_Mode: 3
   Profile_Acceleration: 0
   Profile_Velocity: 0
-  Min_Position_Limit: 1194
-  Max_Position_Limit: 3242
+  Min_Position_Limit: 0
+  Max_Position_Limit: 4095
 
 pitch:
   ID: 2
@@ -17,14 +19,7 @@ pitch:
   Operating_Mode: 3
   Profile_Acceleration: 0
   Profile_Velocity: 0
-  Max_Position_Limit: 3594
-  Min_Position_Limit: 1546
+  Max_Position_Limit: 2304
+  Min_Position_Limit: 1536
 
-roll:
-  ID: 3
-  Return_Delay_Time: 0
-  Operating_Mode: 3
-  Profile_Acceleration: 0
-  Profile_Velocity: 0
-  Min_Position_Limit: 1024
-  Max_Position_Limit: 3072
+
