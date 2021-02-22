@@ -280,8 +280,8 @@
     </joint>
   </transmission>
   <gazebo reference="$right_front_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
@@ -303,8 +303,8 @@
     </joint>
   </transmission>
   <gazebo reference="$right_middle_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
@@ -326,8 +326,8 @@
     </joint>
   </transmission>
   <gazebo reference="$right_rear_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
@@ -349,8 +349,8 @@
     </joint>
   </transmission>
   <gazebo reference="$left_front_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
@@ -372,8 +372,8 @@
     </joint>
   </transmission>
   <gazebo reference="$left_middle_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
@@ -395,8 +395,8 @@
     </joint>
   </transmission>
   <gazebo reference="$left_rear_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
     <kp value="10000000.0" />
     <kd value="1.0" />
     <material>Gazebo/Grey</material>
