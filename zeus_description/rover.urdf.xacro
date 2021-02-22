@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<robot name="myfirst">
+
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1.stl"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.82 0.6 0.3"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.27 -0.02 -0.45"/>
+    </collision>
+    <inertial>
+      <mass value="50"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.4"/>
+    </inertial>
+  </link>
+
+  <link name="rocker_right">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_right.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <!-- <collision>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_right.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0 0 0"/>
+    </collision> -->
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.4"/>
+    </inertial>
+  </link>
+
+  <link name="bogie_right">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/bogie.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <!-- <collision>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/bogie.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision> -->
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.4"/>
+    </inertial>
+  </link>
+
+  <link name="rocker_left">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_right.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <!-- <collision>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_right.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0 0 0"/>
+    </collision> -->
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.4"/>
+    </inertial>
+  </link>
+
+  <link name="bogie_left">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/bogie.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <!-- <collision>
+      <geometry>
+        <box size="1.3 0.75 1.3"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision> -->
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.4"/>
+    </inertial>
+  </link>
+
+  <link name="right_front_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <link name="right_middle_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <link name="right_rear_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <link name="left_front_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <link name="left_middle_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <link name="left_rear_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+
+
+
+
+
+
+  <joint name="rocker_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rocker_right"/>
+    <origin rpy="0 -0.2 0" xyz="-0.3 -0.3 -0.4"/>
+    <!-- <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/> -->
+  </joint>
+
+  <joint name="bogie_right_joint" type="continuous">
+    <parent link="rocker_right"/>
+    <child link="bogie_right"/>
+    <origin rpy="0 -0.5 0" xyz="0.35 0 -0.2"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/>
+  </joint>
+
+  <joint name="rocker_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rocker_left"/>
+    <origin rpy="0 -0.2 0" xyz="-0.3 0.3 -0.4"/>
+    <!-- <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/>
+    <mimic joint="rocker_right_joint" multiplier="-1"/> -->
+  </joint>
+
+  <joint name="bogie_left_joint" type="continuous">
+    <parent link="rocker_left"/>
+    <child link="bogie_left"/>
+    <origin rpy="0 -0.5 0" xyz="0.35 0 -0.2"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/>
+  </joint>
+
+  <joint name="right_front_wheel_joint" type="continuous">
+    <parent link="bogie_right"/>
+    <child link="right_front_wheel"/>
+   <origin rpy="1.57075 0 0" xyz="0 -0.05 -0.45"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="right_front_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_front_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_front_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$right_front_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="right_middle_wheel_joint" type="continuous">
+    <parent link="bogie_right"/>
+    <child link="right_middle_wheel"/>
+    <origin rpy="1.57075 0 0" xyz="-0.45 -0.05 -0.05"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="right_middle_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_middle_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_middle_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$right_middle_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="right_rear_wheel_joint" type="continuous">
+    <parent link="rocker_right"/>
+    <child link="right_rear_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.6 -0.05 -0.35"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <transmission name="right_rear_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_rear_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_rear_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$right_rear_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="left_front_wheel_joint" type="continuous">
+    <parent link="bogie_left"/>
+    <child link="left_front_wheel"/>
+   <origin rpy="1.57075 0 0" xyz="0 0.05 -0.45"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="left_front_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_front_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_front_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$left_front_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="left_middle_wheel_joint" type="continuous">
+    <parent link="bogie_left"/>
+    <child link="left_middle_wheel"/>
+    <origin rpy="1.57075 0 0" xyz="-0.45 0.05 -0.05"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="left_middle_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_middle_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_middle_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$left_middle_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="left_rear_wheel_joint" type="continuous">
+    <parent link="rocker_left"/>
+    <child link="left_rear_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.6 0.05 -0.35"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <transmission name="left_rear_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_rear_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_rear_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <gazebo reference="$left_rear_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>
