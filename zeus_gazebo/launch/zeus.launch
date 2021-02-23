@@ -29,7 +29,6 @@
     args="joint_state_controller 
           rover_diff_drive_controller 
           left_rocker_bogie_controller 
-          right_rocker_bogie_controller
-          --shutdown-timeout 3"/>
+          right_rocker_bogie_controller"/>
 
 </launch>
