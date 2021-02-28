@@ -42,11 +42,42 @@
 
   <group if="$(arg simulation)">
   
-    <node pkg="topic_tools" type="transform" name="transform" output="screen"
-      args="/ros_talon1/motor_percent /right_front_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+    <node pkg="topic_tools" type="transform" name="transform1" output="screen"
+      args="/ros_talon1/motor_percent /left_front_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
       respawn="true"
       respawn_delay="1">
     </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform2" output="screen"
+      args="/ros_talon2/motor_percent /right_front_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform3" output="screen"
+      args="/ros_talon3/motor_percent /left_middle_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform4" output="screen"
+      args="/ros_talon4/motor_percent /right_middle_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+ 
+    <node pkg="topic_tools" type="transform" name="transform5" output="screen"
+      args="/ros_talon5/motor_percent /left_rear_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform6" output="screen"
+      args="/ros_talon6/motor_percent /right_rear_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+
     <param name="/twist2cmd/twist2cmd/max_motor_cmd" value="1"/>
     <param name="/twist2cmd/twist2cmd/angular_gain" value="0.01"/>
     <param name="/twist2cmd/twist2cmd/linear_gain" value="0.01"/>
