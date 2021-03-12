@@ -51,8 +51,8 @@ class LowLevelControlNode():
 
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
         # Model Settings
-        self.ddr.add_variable("linear_gain", "float", 0.5, 0, 1)
-        self.ddr.add_variable("angular_gain", "float", 0.5, -1, 1)
+        self.ddr.add_variable("linear_gain", "float", 0.5, 0, 2)
+        self.ddr.add_variable("angular_gain", "float", -1, -4, 4)
         self.ddr.add_variable("max_motor_cmd", "int", 60, 1, 100)
 
         # Start Server
@@ -96,7 +96,7 @@ class LowLevelControlNode():
         r_cmd = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain
 
         # Limit speed at 60%
-        self.l_cmd = self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
+        self.l_cmd = -self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
         self.r_cmd = self.limit_speed(r_cmd, max_val=self.max_motor_cmd)
 
 
