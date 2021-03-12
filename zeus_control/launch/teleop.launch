@@ -29,4 +29,7 @@
     <remap from="cmd_vel_out" to="zeus_control/cmd_vel"/>
   </node>
 
+  <!-- Launch low level controller -->
+  <node pkg="zeus_control" type="twist2motor_cmd.py" name="twist2cmd" output="screen">
+  </node>
 </launch>
