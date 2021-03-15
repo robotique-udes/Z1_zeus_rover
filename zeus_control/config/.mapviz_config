@@ -32,7 +32,7 @@ displays:
     config:
       visible: true
       collapsed: false
-      topic: /navsat/fix
+      topic: /zeus/navsat/fix
       color: "#ff0a02"
       draw_style: points
       position_tolerance: 0

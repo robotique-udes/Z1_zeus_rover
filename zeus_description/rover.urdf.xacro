@@ -203,8 +203,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_front_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_front_wheel">
@@ -247,8 +247,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_middle_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_middle_wheel">
@@ -291,8 +291,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_rear_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_rear_wheel">
@@ -335,8 +335,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_front_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_front_wheel">
@@ -379,8 +379,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_middle_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_middle_wheel">
@@ -423,8 +423,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_rear_wheel_joint">
-      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_rear_wheel">

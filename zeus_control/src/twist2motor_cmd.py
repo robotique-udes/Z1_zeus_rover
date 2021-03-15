@@ -96,7 +96,7 @@ class LowLevelControlNode():
         r_cmd = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain
 
         # Limit speed at 60%
-        self.l_cmd = -self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
+        self.l_cmd = self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
         self.r_cmd = self.limit_speed(r_cmd, max_val=self.max_motor_cmd)
 
 
