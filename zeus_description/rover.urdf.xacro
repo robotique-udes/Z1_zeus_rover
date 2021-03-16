@@ -12,8 +12,8 @@
   <xacro:property name="wheel_radius" value="0.1" />
   <xacro:property name="wheel_width" value="0.1" />
   <xacro:property name="wheel_mass" value="1" />
-  <xacro:property name="wheel_mu1" value="0.5" />
-  <xacro:property name="wheel_mu2" value="0.5" />
+  <xacro:property name="wheel_mu1" value="0.2" />
+  <xacro:property name="wheel_mu2" value="3.0" />
   <xacro:property name="wheel_kp" value="10000000.0" />
   <xacro:property name="wheel_kd" value="1" />
 
