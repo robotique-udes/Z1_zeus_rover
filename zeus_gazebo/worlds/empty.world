@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <scene>
+        <background>202 150 66</background>
+        <shadows>0</shadows>
+    </scene>
+
+    <physics type="ode">
+        <!-- <max_step_size>0.0185</max_step_size> -->
+        <gravity>0 0 -9.81</gravity>
+    </physics>
+
+    <light type="directional" name="directional_light_1">
+      <pose>0 20 20 0.1 0.1 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>1 1 1 1</specular>
+      <attenuation>
+        <range>300</range>
+      </attenuation>
+      <direction>0.1 0.1 -1</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://curiosity_path</uri>
+      <name>curiosity_path</name>
+      <pose>-136.5 127 14.21 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://rock9</uri>
+      <name>rock9_4</name>
+      <pose>-8.1 -8.18 -2.85 0 0 .85</pose>
+    </include>
+
+    <include>
+      <uri>model://crater</uri>
+      <name>crater</name>
+      <pose>-48.502 1.5 -2.1 0 0 0</pose>
+    </include>
+    
+  </world>
+</sdf>
