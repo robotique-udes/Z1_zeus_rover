@@ -60,7 +60,7 @@ class OdomPublisher():
 
         # Publisher
         self.odomPub = rospy.Publisher("odom", Odometry, queue_size=10)
-        self.odomBroadcaster = TransformBroadcaster()
+        # self.odomBroadcaster = TransformBroadcaster()
 
         # internal data
         self.enc_left = None        # wheel encoder readings
@@ -122,13 +122,13 @@ class OdomPublisher():
         quaternion.y = 0.0
         quaternion.z = sin( self.th / 2 )
         quaternion.w = cos( self.th / 2 )
-        self.odomBroadcaster.sendTransform(
-            (self.x, self.y, 0),
-            (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
-            rospy.Time.now(),
-            self.base_frame_id,
-            self.odom_frame_id
-            )
+        # self.odomBroadcaster.sendTransform(
+        #     (self.x, self.y, 0),
+        #     (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
+        #     rospy.Time.now(),
+        #     self.base_frame_id,
+        #     self.odom_frame_id
+        #     )
         
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()

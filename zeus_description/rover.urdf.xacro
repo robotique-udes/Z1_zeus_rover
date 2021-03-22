@@ -556,11 +556,11 @@
       <frameId>base_link</frameId>
       <topicName>navsat/fix</topicName>
       <velocityTopicName>navsat/vel</velocityTopicName>
-      <referenceLatitude>49.9</referenceLatitude>
-      <referenceLongitude>8.9</referenceLongitude>
+      <referenceLatitude>51.47</referenceLatitude>
+      <referenceLongitude>-112.708168</referenceLongitude>
       <referenceHeading>0</referenceHeading>
       <referenceAltitude>0</referenceAltitude>
-      <drift>0.0001 0.0001 0.0001</drift>
+      <!-- <drift>0.0001 0.0001 0.0001</drift> -->
     </plugin>
   </gazebo>
 
