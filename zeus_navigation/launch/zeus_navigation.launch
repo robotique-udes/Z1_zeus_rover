@@ -8,7 +8,7 @@
     <include file="$(find amcl)/examples/amcl_diff.launch" />--> 
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <remap from="/cmd_vel" to="/husky_velocity_controller/cmd_vel" />
+    <remap from="/cmd_vel" to="/zeus_control/cmd_vel" />
     <rosparam file="$(find zeus_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
     <rosparam file="$(find zeus_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find zeus_navigation)/config/local_costmap_params.yaml" command="load" />

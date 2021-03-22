@@ -12,8 +12,8 @@
   <xacro:property name="wheel_radius" value="0.1" />
   <xacro:property name="wheel_width" value="0.1" />
   <xacro:property name="wheel_mass" value="1" />
-  <xacro:property name="wheel_mu1" value="0.5" />
-  <xacro:property name="wheel_mu2" value="0.5" />
+  <xacro:property name="wheel_mu1" value="0.2" />
+  <xacro:property name="wheel_mu2" value="3.0" />
   <xacro:property name="wheel_kp" value="10000000.0" />
   <xacro:property name="wheel_kd" value="1" />
 
@@ -584,10 +584,10 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
   </link>
-  <joint name="stereo_link" type="fixed">
+  <joint name="stereo_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.13 -0.02 -0.29" rpy="0 0 0"/>
-    <parent link="frame_link"/>
+    <parent link="base_link"/>
     <child link="stereo_link"/>
   </joint>
   
