@@ -19,7 +19,7 @@ pitch:
   Operating_Mode: 3
   Profile_Acceleration: 0
   Profile_Velocity: 0
-  Max_Position_Limit: 2304
-  Min_Position_Limit: 1536
+  Max_Position_Limit: 2728
+  Min_Position_Limit: 1368
 
 
