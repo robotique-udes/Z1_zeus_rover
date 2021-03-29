@@ -51,12 +51,6 @@ class OdomPublisher():
 
         # Subscriber
         rospy.Subscriber("/zeus/joint_states", JointState, self.wheelsCallback)
-        # rospy.Subscriber("lfwheel", Int16, self.lfwheelCallback)
-        # rospy.Subscriber("lmwheel", Int16, self.lmwheelCallback)
-        # rospy.Subscriber("lbwheel", Int16, self.lbwheelCallback)
-        # rospy.Subscriber("rfwheel", Int16, self.rfwheelCallback)
-        # rospy.Subscriber("rmwheel", Int16, self.rmwheelCallback)
-        # rospy.Subscriber("rbheel", Int16, self.rbwheelCallback)
 
         # Publisher
         self.odomPub = rospy.Publisher("odom", Odometry, queue_size=10)
@@ -83,7 +77,6 @@ class OdomPublisher():
     def update(self, evt):
         self.lwheels()
         self.rwheels()
-        print(self.raw_encoder)
         # calculate odometry
         if self.enc_left == None:
             d_left = 0
