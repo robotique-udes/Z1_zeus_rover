@@ -584,11 +584,34 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
   </link>
+
+  <link name="stereo_opt_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
   <joint name="stereo_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.13 -0.02 -0.29" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="stereo_link"/>
+  </joint>
+
+  <joint name="stereo_opt_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.0 0.0 0.0" rpy="-1.57 0 -1.57"/>
+    <parent link="stereo_link"/>
+    <child link="stereo_opt_link"/>
   </joint>
   
   <!-- Stereo camera with depth -->
@@ -604,7 +627,7 @@
       </image>
       <clip>
         <near>0.05</near>
-        <far>3</far>
+        <far>50</far>
       </clip>
     </camera>
     <plugin name="stereo_depth_controller" filename="libgazebo_ros_openni_kinect.so">
@@ -617,7 +640,7 @@
       <depthImageTopicName>/zed/depth/image_raw</depthImageTopicName>
       <depthImageInfoTopicName>/zed/depth/camera_info</depthImageInfoTopicName>
       <pointCloudTopicName>/zed/depth/points</pointCloudTopicName>
-      <frameName>stereo_link</frameName>
+      <frameName>stereo_opt_link</frameName>
       <pointCloudCutoff>0.5</pointCloudCutoff>
       <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
       <distortionK1>0.00000001</distortionK1>
