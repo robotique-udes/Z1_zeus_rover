@@ -23,8 +23,8 @@ class MotorControl():
             self.timer = rospy.Timer(rospy.Duration(2), self.connect)
 
         # Set max speed
-        self.call_motor_cmd(0, 3, "Position_P_Gain", 300)
-        self.call_motor_cmd(1, 2, "Position_P_Gain", 350)
+        self.call_motor_cmd(0, 3, "Position_P_Gain", 200)
+        self.call_motor_cmd(1, 2, "Position_P_Gain", 200)
         
         self.angles = [0, 0]
         self.limits = [YAW, PITCH]
@@ -58,11 +58,11 @@ class MotorControl():
         self.call_motor_cmd(0, 3, "Goal_Position", YAW_HOME)  
         self.call_motor_cmd(1, 2, "Goal_Position", PITCH_HOME)  
 
-    def move_axis(self, axis, motor_id, value, limits):
+    def move_axis(self, axis, motor_id, value):
         if self.motors == 0:
             return
 
-        self.call_motor_cmd(axis, motor_id, "Goal_Position", value*RANGE/(limits[1]-limits[0]) + HOME[axis-1])
+        self.call_motor_cmd(axis, motor_id, "Goal_Position", value + HOME[axis-1])
         
     def move_relative(self, axis, motor_id, value):
         if self.motors == 0:
