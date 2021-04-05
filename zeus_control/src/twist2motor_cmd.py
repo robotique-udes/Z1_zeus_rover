@@ -16,6 +16,7 @@ ROS Node to go from a Twist to commands for the 6 robot motors
 """
 
 import rospy
+import numpy as np
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Twist
 from ddynamic_reconfigure_python.ddynamic_reconfigure import DDynamicReconfigure
@@ -30,6 +31,8 @@ class LowLevelControlNode():
         rospy.on_shutdown(self.on_shutdown)
         self.l_cmd = 0
         self.r_cmd = 0
+        self.last_cmd = [0, 0, 0, 0, 0, 0]
+        self.last_cmd_time = [rospy.get_rostime().to_sec()]*6
 
         # Init publishers
         self.m1_pub = rospy.Publisher('/ros_talon1/motor_percent', Int32, queue_size=10)
@@ -39,9 +42,6 @@ class LowLevelControlNode():
         self.m5_pub = rospy.Publisher('/ros_talon5/motor_percent', Int32, queue_size=10)
         self.m6_pub = rospy.Publisher('/ros_talon6/motor_percent', Int32, queue_size=10)
 
-        # Init command loop 
-        rospy.Timer(rospy.Duration(1.0/50), self.send_cmd_callback)
-
         # Subscribe to joystick
         self.twist_sub = rospy.Subscriber('zeus_control/cmd_vel', Twist, self.twist_callback)
 
@@ -50,14 +50,25 @@ class LowLevelControlNode():
         self.ddr = DDynamicReconfigure("twist2cmd")
 
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
-        # Model Settings
         self.ddr.add_variable("linear_gain", "float", 0.5, 0, 2)
-        self.ddr.add_variable("angular_gain", "float", -1, -4, 4)
+        self.ddr.add_variable("angular_gain", "float", -4, -8, 8)
         self.ddr.add_variable("max_motor_cmd", "int", 60, 1, 100)
+        self.ddr.add_variable("max_accel", "float", 100, 1, 300)
+
+        # Individual gains for wheels
+        self.ddr.add_variable("wheel_1_gain", "float", 1.0, -2.0, 2.0)
+        self.ddr.add_variable("wheel_2_gain", "float", 1.0, -2.0, 2.0)
+        self.ddr.add_variable("wheel_3_gain", "float", 1.0, -2.0, 2.0)
+        self.ddr.add_variable("wheel_4_gain", "float", 1.0, -2.0, 2.0)
+        self.ddr.add_variable("wheel_5_gain", "float", 1.0, -2.0, 2.0)
+        self.ddr.add_variable("wheel_6_gain", "float", 1.0, -2.0, 2.0)
 
         # Start Server
         self.ddr.start(self.dynamic_reconfigure_callback)
         rospy.sleep(1)
+
+        # Init command loop 
+        rospy.Timer(rospy.Duration(1.0/50), self.send_cmd_callback)
 
 
     def dynamic_reconfigure_callback(self, config, level):
@@ -111,6 +122,32 @@ class LowLevelControlNode():
         return cmd
 
 
+    def limit_accel(self, cmd, idx):
+        '''
+        Limits command at a certain acceleration based on past commands
+        '''
+        # Compute acceleration
+        out_cmd = 0
+        last_t = self.last_cmd_time[idx]
+        last_cmd = self.last_cmd[idx]
+        delta_cmd = cmd - last_cmd
+        current_t = rospy.get_rostime().to_sec()
+        delta_t = current_t - last_t
+        accel = delta_cmd / delta_t
+
+        # Limit command
+        if abs(accel) <= self.max_accel:
+            out_cmd = cmd
+
+        else:
+            out_cmd = last_cmd + self.max_accel*delta_t*np.sign(delta_cmd)
+
+        # Store values 
+        self.last_cmd[idx] = out_cmd
+        self.last_cmd_time[idx] = current_t
+        return out_cmd
+
+
     def send_cmd_callback(self, evt):
         '''
         Send commands to motors timer
@@ -123,14 +160,14 @@ class LowLevelControlNode():
         Publishes commands
         '''
         # Left wheels
-        self.m1_pub.publish(self.l_cmd)
-        self.m3_pub.publish(self.l_cmd)
-        self.m5_pub.publish(self.l_cmd)
+        self.m1_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_1_gain, max_val=100), 0))
+        self.m3_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_3_gain, max_val=100), 2))
+        self.m5_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_5_gain, max_val=100), 4))
         
         # Right wheels
-        self.m2_pub.publish(self.r_cmd)
-        self.m4_pub.publish(self.r_cmd)
-        self.m6_pub.publish(self.r_cmd)
+        self.m2_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_2_gain, max_val=100), 1))
+        self.m4_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_4_gain, max_val=100), 3))
+        self.m6_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_6_gain, max_val=100), 5))
 
 
     def on_shutdown(self):

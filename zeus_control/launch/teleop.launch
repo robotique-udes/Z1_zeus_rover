@@ -6,9 +6,9 @@
   <!--<node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>-->
 
   <!-- Send Twist commands from joystick -->
-  <arg name="joy_config" default="xbox" />
+  <arg name="joy_config" default="1" />
   <arg name="joy_dev" default="/dev/input/js0" />
-  <arg name="config_filepath" default="$(find teleop_twist_joy)/config/$(arg joy_config).config.yaml" />
+  <arg name="config_filepath" default="$(find zeus_control)/config/teleop_config$(arg joy_config).yaml" />
   <arg name="joy_topic" default="joy" />
   
   <node pkg="joy" type="joy_node" name="joy_node">
