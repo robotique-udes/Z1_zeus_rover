@@ -2,24 +2,40 @@
 
 <launch>
 
-  <include file="$(find zeus_gazebo)/launch/mars_env_only.launch">
+  <arg name="world" default="$(find zeus_gazebo)/worlds/mars.world"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world)"/>
+    <arg name="paused" default="true"/>
   </include>
 
   <!-- Convert an xacro and put on parameter server -->
-  <param name="robot_description" command="$(find xacro)/xacro.py $(find zeus_description)/urdf/zeus.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find zeus_description)rover.urdf.xacro" />
 
   <!-- Spawn a robot into Gazebo -->
-  <node name="zeus_spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model zeus" />
+  <node name="zeus_spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x 0 -y 0 -z 0.3 -Y 0.7 -model zeus" />
 
   <!-- Send Twist commands -->
-  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>
+  <!-- <node name="teleop" pkg="zeus_description" type="keyboard_teleop.py"/> -->
 
-  <!-- send fake joint values -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="False"/>
+  <!-- Publish joints state -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen">
+        <remap from="/joint_states" to="/zeus/joint_states" />
   </node>
 
-  <!-- Combine joint values -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  <rosparam command="load" file="$(find zeus_description)controllers.yaml"/>
 
+  <node name="zeus_controller_spawner" pkg="controller_manager" type="spawner" 
+    args="--namespace=/zeus
+          joint_state_controller 
+          left_rocker_bogie_controller 
+          right_rocker_bogie_controller
+          right_front_wheel_velocity_controller
+          right_middle_wheel_velocity_controller
+          right_rear_wheel_velocity_controller
+          left_front_wheel_velocity_controller
+          left_middle_wheel_velocity_controller
+          left_rear_wheel_velocity_controller"/>
+<!-- rover_diff_drive_controller -->
 </launch>

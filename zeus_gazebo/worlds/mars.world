@@ -7,7 +7,7 @@
     </scene>
 
     <physics type="ode">
-        <max_step_size>0.0185</max_step_size>
+        <!-- <max_step_size>0.0185</max_step_size> -->
         <gravity>0 0 -9.81</gravity>
     </physics>
 
@@ -26,11 +26,11 @@
       <uri>model://sun</uri>
     </include>
 
-    <include>
+    <!--<include>
       <uri>model://curiosity_path</uri>
       <name>curiosity_path</name>
       <pose>-136.5 127 14.21 0 0 0</pose>
-    </include>
+    </include>-->
 
     <include>
       <uri>model://terrain</uri>

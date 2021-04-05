@@ -1,0 +1,667 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="zeus">
+
+  <xacro:property name="deg90" value="1.57075" />
+  <xacro:property name="deg45" value="0.7854" />
+  <xacro:property name="frame_width" value="0.6" />
+  <xacro:property name="frame_height" value="0.3" />
+  <xacro:property name="frame_length" value="0.82" />
+  <xacro:property name="frame_mass" value="50" />
+  <xacro:property name="rocker_mass" value="10" />
+  <xacro:property name="bogie_mass" value="10" />
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_width" value="0.1" />
+  <xacro:property name="wheel_mass" value="1" />
+  <xacro:property name="wheel_mu1" value="0.2" />
+  <xacro:property name="wheel_mu2" value="3.0" />
+  <xacro:property name="wheel_kp" value="10000000.0" />
+  <xacro:property name="wheel_kd" value="1" />
+
+  <!-- High level dummy link for ODE -->
+  <link name="base_link">
+  </link>
+
+  <!-- Frame -->
+  <link name="frame_link">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1.stl"/>
+      </geometry>
+      <origin rpy="${deg90} 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${frame_length} ${frame_width} ${frame_height}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.27 -0.02 -0.45"/>
+    </collision>
+    <inertial>
+      <mass value="${frame_mass}"/>
+      <inertia ixx="4" ixy="0.0" ixz="0.0" iyy="4" iyz="0.0" izz="4"/>
+    </inertial>
+  </link>
+  <joint name="frame_link_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="frame_link"/>
+    <origin rpy="0 -0 0" xyz="0 0 0"/>
+  </joint>
+  <gazebo reference="frame_link">
+    <material>Gazebo/DarkGray</material>
+  </gazebo>
+
+<!-- Rocker right -->
+  <link name="rocker_right">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_right.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <inertial>
+      <mass value="${rocker_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="rocker_right_joint" type="revolute">
+    <parent link="frame_link"/>
+    <child link="rocker_right"/>
+    <origin rpy="0 -0.2 0" xyz="-0.3 -0.3 -0.4"/>
+    <limit  lower="${-deg45}" upper="${deg45}" effort="100000.0" velocity="10.0"/>
+    <axis xyz="0 1 0"/>
+		<joint_properties damping="0.5" friction="0.5"/>
+  </joint>
+  <transmission name="rocker_right_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rocker_right_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rocker_right_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="rocker_right">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <!-- Bogie right -->
+  <link name="bogie_right">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/bogie.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <inertial>
+      <mass value="${bogie_mass}"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="bogie_right_joint" type="revolute">
+    <parent link="rocker_right"/>
+    <child link="bogie_right"/>
+    <origin rpy="0 -0.5 0" xyz="0.35 0 -0.2"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/>
+    <limit  lower="${-deg90}" upper="0.6" effort="100000.0" velocity="100000.0"/>
+  </joint>
+  <gazebo reference="bogie_right">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <!-- Rocker left -->
+  <link name="rocker_left">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/rocker_left.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <inertial>
+      <mass value="${rocker_mass}"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="rocker_left_joint" type="continuous">
+    <parent link="frame_link"/>
+    <child link="rocker_left"/>
+    <origin rpy="0 -0.2 0" xyz="-0.3 0.3 -0.4"/>
+    <limit  lower="${-deg45}" upper="${deg45}" effort="100000.0" velocity="10.0"/>
+    <axis xyz="0 1 0"/>
+		<joint_properties damping="0.5" friction="0.5"/>
+  </joint>
+  <transmission name="rocker_left_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rocker_left_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rocker_left_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="rocker_left">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <!-- Bogie left -->
+  <link name="bogie_left">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/bogie.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+    <inertial>
+      <mass value="${bogie_mass}"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="bogie_left_joint" type="revolute">
+    <parent link="rocker_left"/>
+    <child link="bogie_left"/>
+    <origin rpy="0 -0.5 0" xyz="0.35 0 -0.2"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0" friction="10.0"/>
+    <limit  lower="${-deg90}" upper="0.6" effort="100000.0" velocity="100000.0"/>
+  </joint>
+  <gazebo reference="bogie_left">
+    <material>Gazebo/Gray</material>
+  </gazebo>
+
+  <!-- Wheel front right -->
+  <link name="right_front_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="right_front_wheel_joint" type="continuous">
+    <parent link="bogie_right"/>
+    <child link="right_front_wheel"/>
+   <origin rpy="${deg90} 0 0" xyz="0 -0.05 -0.45"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="right_front_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_front_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_front_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="right_front_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Wheel middle right -->
+  <link name="right_middle_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="right_middle_wheel_joint" type="continuous">
+    <parent link="bogie_right"/>
+    <child link="right_middle_wheel"/>
+    <origin rpy="${deg90} 0 0" xyz="-0.45 -0.05 -0.05"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="right_middle_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_middle_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_middle_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="right_middle_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Wheel rear right -->
+  <link name="right_rear_wheel">
+    <visual>
+      <origin rpy="${deg90} 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="${deg90} 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="right_rear_wheel_joint" type="continuous">
+    <parent link="rocker_right"/>
+    <child link="right_rear_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.6 -0.05 -0.35"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <transmission name="right_rear_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_rear_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="right_rear_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="right_rear_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Wheel front left -->
+  <link name="left_front_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="left_front_wheel_joint" type="continuous">
+    <parent link="bogie_left"/>
+    <child link="left_front_wheel"/>
+   <origin rpy="${deg90} 0 0" xyz="0 0.05 -0.45"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="left_front_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_front_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_front_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="left_front_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Wheel middle left -->
+  <link name="left_middle_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+       <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="left_middle_wheel_joint" type="continuous">
+    <parent link="bogie_left"/>
+    <child link="left_middle_wheel"/>
+    <origin rpy="${deg90} 0 0" xyz="-0.45 0.05 -0.05"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+  <transmission name="left_middle_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_middle_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_middle_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="left_middle_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Wheel rear left -->
+  <link name="left_rear_wheel">
+    <visual>
+      <origin rpy="${deg90} 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/Z1-PRP-01-001.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+       <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin rpy="${deg90} 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_mass*wheel_radius*wheel_radius}" ixy="0.0" ixz="0.0" iyy="${wheel_mass*wheel_radius*wheel_radius}" iyz="0.0" izz="${wheel_mass*wheel_radius*wheel_radius}"/>
+    </inertial>
+  </link>
+  <joint name="left_rear_wheel_joint" type="continuous">
+    <parent link="rocker_left"/>
+    <child link="left_rear_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.6 0.05 -0.35"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <transmission name="left_rear_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_rear_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="left_rear_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
+    </joint>
+  </transmission>
+  <gazebo reference="left_rear_wheel">
+    <mu1 value="${wheel_mu1}"/>
+    <mu2 value="${wheel_mu2}"/>
+    <kp value="${wheel_kp}" />
+    <kd value="${wheel_kd}" />
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <visual>
+      <origin xyz="-0.15 0 0" rpy="${deg90} 0 ${deg90}"/>
+      <geometry>
+        <mesh filename="file://$(find zeus_description)/STL/camera.stl" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="-0.6 -0.26 0.50" rpy="0 0.6 0"/>
+    <parent link="frame_link"/>
+    <child link="camera_link"/>
+  </joint>
+  <gazebo reference="camera_link">
+    <material>Gazebo/White</material>
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.256</horizontal_fov>
+        <image>
+          <width>1920</width>
+          <height>1080</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <robotNamespace>/zeus</robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- IMU -->
+  <link name="imu_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.13 -0.02 -0.29" rpy="0 0 0"/>
+    <parent link="frame_link"/>
+    <child link="imu_link"/>
+  </joint>
+  <gazebo reference="imu_link">
+    <material>Gazebo/Blue</material>
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <robotNamespace>zeus</robotNamespace>
+        <topicName>imu</topicName>
+        <bodyName>imu_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <!-- GPS -->
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <robotNamespace>zeus</robotNamespace>
+      <alwayson>true</alwayson>
+      <updateRate>1.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <frameId>base_link</frameId>
+      <topicName>navsat/fix</topicName>
+      <velocityTopicName>navsat/vel</velocityTopicName>
+      <referenceLatitude>51.47</referenceLatitude>
+      <referenceLongitude>-112.708168</referenceLongitude>
+      <referenceHeading>0</referenceHeading>
+      <referenceAltitude>0</referenceAltitude>
+      <!-- <drift>0.0001 0.0001 0.0001</drift> -->
+    </plugin>
+  </gazebo>
+
+  <!-- Stereo camera -->
+  <link name="stereo_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <link name="stereo_opt_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="stereo_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.13 -0.02 -0.29" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="stereo_link"/>
+  </joint>
+
+  <joint name="stereo_opt_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.0 0.0 0.0" rpy="-1.57 0 -1.57"/>
+    <parent link="stereo_link"/>
+    <child link="stereo_opt_link"/>
+  </joint>
+  
+  <!-- Stereo camera with depth -->
+  <gazebo reference="stereo_link">
+  <sensor name="stereo_depth_camera" type="depth">
+    <update_rate>20</update_rate>
+    <camera>
+      <horizontal_fov>1.047198</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.05</near>
+        <far>50</far>
+      </clip>
+    </camera>
+    <plugin name="stereo_depth_controller" filename="libgazebo_ros_openni_kinect.so">
+      <baseline>0.2</baseline>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1.0</updateRate>
+      <cameraName>zed</cameraName>
+      <imageTopicName>/zed/color/image_raw</imageTopicName>
+      <cameraInfoTopicName>/zed/color/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>/zed/depth/image_raw</depthImageTopicName>
+      <depthImageInfoTopicName>/zed/depth/camera_info</depthImageInfoTopicName>
+      <pointCloudTopicName>/zed/depth/points</pointCloudTopicName>
+      <frameName>stereo_opt_link</frameName>
+      <pointCloudCutoff>0.5</pointCloudCutoff>
+      <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+      <distortionK1>0.00000001</distortionK1>
+      <distortionK2>0.00000001</distortionK2>
+      <distortionK3>0.00000001</distortionK3>
+      <distortionT1>0.00000001</distortionT1>
+      <distortionT2>0.00000001</distortionT2>
+      <CxPrime>0</CxPrime>
+      <Cx>0</Cx>
+      <Cy>0</Cy>
+      <focalLength>0</focalLength>
+      <hackBaseline>0</hackBaseline>
+    </plugin>
+  </sensor>
+  </gazebo>
+
+  <!-- Controllers -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>zeus</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>
