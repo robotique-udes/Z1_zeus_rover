@@ -38,13 +38,14 @@ class PanTiltControl():
         self.cmd = [0, 0]
         self.motor_state = [0, 0]
         self.motor_sub = rospy.Subscriber("/dynamixel_workbench/dynamixel_state", DynamixelStateList, self.update_motors)
+        self.init = False
 
         # Initialize configurable params
         # Create a DynamicDynamicReconfigure Server
         self.ddr = DDynamicReconfigure("pan_tilt")
 
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
-        self.ddr.add_variable("gain", "float: max speed gain", 1.0, 0.0, 10.0)
+        self.ddr.add_variable("gain", "float: max speed gain", 100.0, 10.0, 200.0)
         
         # Start Server
         self.ddr.start(self.dynamic_reconfigure_callback)
@@ -87,6 +88,9 @@ class PanTiltControl():
                 pitch = motor.present_position
         self.motor_state = [yaw, pitch] 
         self.motor_control.update_motors([yaw, pitch])
+        if not self.init:
+            self.cmd = self.motor_state
+            self.init = True
 
 
     def go_home(self):
@@ -136,16 +140,21 @@ class PanTiltControl():
         '''
         # Go home
         if msg.buttons[3]:
+            self.cmd = [YAW_HOME, PITCH_HOME]
             self.go_home()
+
+        # Reset cmd
+        elif msg.buttons[0]:
+            self.cmd = self.motor_state
 
         else:
             # Pan 
-            pan_cmd = self.limit_pos(self.motor_state[0] + msg.axes[6]*self.gain, 0)
+            pan_cmd = self.limit_pos(self.cmd[0] + msg.axes[6]*self.gain, 0)
 
             # Tilt
-            tilt_cmd = self.limit_pos(self.motor_state[1] + msg.axes[7]*self.gain, 1)
+            tilt_cmd = self.limit_pos(self.cmd[1] - msg.axes[7]*self.gain, 1)
 
-            self.cmd = [pan_cmd, tilt_cmd]
+            self.cmd = [int(pan_cmd), int(tilt_cmd)]
             self.send_cmd()
 
 
