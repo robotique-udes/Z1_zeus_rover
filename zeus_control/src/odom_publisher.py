@@ -35,15 +35,13 @@ class OdomPublisher():
 
         self.rate = 10.0  # the rate at which to publish the transform
         self.base_width = 0.6 # The wheel base width in meters
-        self.ticks_meter = 6045*2*3.14159265359*0.1*40  # The number of wheel encoder ticks per meter of travel
+        self.ticks_meter = (6045*40)/(3.14159265359*0.2)  # The number of wheel encoder ticks per meter of travel
         
         self.base_frame_id = 'base_link' # the name of the base frame of the robot
         self.odom_frame_id = 'odom' # the name of the odometry reference frame
 
-        ####Tochange###
-        self.encoder_max = 3.14159265359*2
-        self.encoder_min = -3.14159265359*2 #6045 ticks/turn
-        self.encoder_max = 3.14159265359*2
+        self.encoder_min = 1000000000000 #6045 ticks/turn
+        self.encoder_max = -1000000000000
         self.encoder_low_wrap = (self.encoder_max - self.encoder_min) * 0.3 + self.encoder_min
         self.encoder_high_wrap = (self.encoder_max - self.encoder_min) * 0.7 + self.encoder_min
         self.gear_box = 40
@@ -137,25 +135,25 @@ class OdomPublisher():
         self.odomPub.publish(odom)
 
     def lfwheelCallback(self, msg):
-        self.raw_encoder[0] = msg
+        self.raw_encoder[0] = msg.data
 
     def lmwheelCallback(self, msg):
-        self.raw_encoder[1] = msg
+        self.raw_encoder[1] = msg.data
 
     def lbwheelCallback(self, msg):
-        self.raw_encoder[1] = msg
+        self.raw_encoder[1] = msg.data
 
     def rfwheelCallback(self, msg):
-        self.raw_encoder[3] = msg
+        self.raw_encoder[3] = msg.data
 
     def rmwheelCallback(self, msg):
-        self.raw_encoder[4] = msg
+        self.raw_encoder[4] = msg.data
 
     def rbwheelCallback(self, msg):
-        self.raw_encoder[4] = msg
+        self.raw_encoder[4] = msg.data
 
     def lwheels(self):
-        enc = sum(self.raw_encoder[0:1]) / 2
+        enc = -sum(self.raw_encoder[0:2]) / 2
 
         if (enc < self.encoder_low_wrap and self.prev_lencoder > self.encoder_high_wrap):
             self.lmult = self.lmult + 1
@@ -167,7 +165,7 @@ class OdomPublisher():
         self.prev_lencoder = enc
         
     def rwheels(self):
-        enc = sum(self.raw_encoder[3:4]) / 2
+        enc = -sum(self.raw_encoder[3:5]) / 2
 
         if(enc < self.encoder_low_wrap and self.prev_rencoder > self.encoder_high_wrap):
             self.rmult = self.rmult + 1
