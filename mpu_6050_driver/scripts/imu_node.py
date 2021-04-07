@@ -59,8 +59,8 @@ def publish_imu(timer_event):
     gyro_z = read_word_2c(GYRO_ZOUT_H) / 131.0
     
     # Load up the IMU message
-    o = imu_msg.orientation
-    o.x, o.y, o.z, o.w = orientation
+    # o = imu_msg.orientation
+    # o.x, o.y, o.z, o.w = orientation
 
     imu_msg.linear_acceleration.x = accel_x*9.81
     imu_msg.linear_acceleration.y = accel_y*9.81
@@ -91,8 +91,8 @@ if __name__ == '__main__':
 
     bus.write_byte_data(ADDR, PWR_MGMT_1, 0)
 
-    temp_pub = rospy.Publisher('temperature', Temperature)
-    imu_pub = rospy.Publisher('imu/data_raw', Imu)
+    temp_pub = rospy.Publisher('temperature', Temperature, queue_size=10)
+    imu_pub = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
     imu_timer = rospy.Timer(rospy.Duration(0.02), publish_imu)
     temp_timer = rospy.Timer(rospy.Duration(10), publish_temp)
     rospy.spin()
