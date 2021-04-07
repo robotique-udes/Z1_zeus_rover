@@ -17,7 +17,7 @@ ROS Node to publish odom from robot's 6 wheels position
 from math import sin, cos, pi
 
 import rospy
-from std_msgs.msg import Float64MultiArray, Float32
+from std_msgs.msg import Float64MultiArray
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Quaternion
 from nav_msgs.msg import Odometry
@@ -35,27 +35,22 @@ class OdomPublisher():
 
         self.rate = 10.0  # the rate at which to publish the transform
         self.base_width = 0.6 # The wheel base width in meters
-        self.ticks_meter = (6045*40)/(3.14159265359*0.2)  # The number of wheel encoder ticks per meter of travel
+        self.ticks_meter = 10  # The number of wheel encoder ticks per meter of travel
         
         self.base_frame_id = 'base_link' # the name of the base frame of the robot
         self.odom_frame_id = 'odom' # the name of the odometry reference frame
-
-        ####Tochange###
-        self.encoder_max = 10000000000000
-        self.encoder_min = -10000000000000 #6045 ticks/turn
+        self.encoder_min = -3.14159265359*2 #1024 ticks/turn
+        self.encoder_max = 3.14159265359*2
         self.encoder_low_wrap = (self.encoder_max - self.encoder_min) * 0.3 + self.encoder_min
         self.encoder_high_wrap = (self.encoder_max - self.encoder_min) * 0.7 + self.encoder_min
+        self.gear_box = 40
         
 
         # Init command loop 
         rospy.Timer(rospy.Duration(1.0/self.rate), self.update)
 
         # Subscriber
-        ## subscribe to motor's encoder
-        rospy.Subscriber("/ros_talon1/current_position", Float32, self.lfwheelCallback)
-        rospy.Subscriber("/ros_talon2/current_position", Float32, self.rfwheelCallback)
-        rospy.Subscriber("/ros_talon5/current_position", Float32, self.lbwheelCallback)
-        rospy.Subscriber("/ros_talon6/current_position", Float32, self.rbwheelCallback)
+        rospy.Subscriber("/zeus/joint_states", JointState, self.wheelsCallback)
 
         # Publisher
         self.odomPub = rospy.Publisher("odom", Odometry, queue_size=10)
@@ -120,6 +115,13 @@ class OdomPublisher():
         quaternion.y = 0.0
         quaternion.z = sin( self.th / 2 )
         quaternion.w = cos( self.th / 2 )
+        # self.odomBroadcaster.sendTransform(
+        #     (self.x, self.y, 0),
+        #     (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
+        #     rospy.Time.now(),
+        #     self.base_frame_id,
+        #     self.odom_frame_id
+        #     )
         
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
@@ -133,28 +135,29 @@ class OdomPublisher():
         odom.twist.twist.linear.y = 0
         odom.twist.twist.angular.z = self.dr
         self.odomPub.publish(odom)
+    def wheelsCallback(self, msg):
+        self.raw_encoder = msg.position[0:6]
 
     def lfwheelCallback(self, msg):
-        self.raw_encoder[0] = msg.data
+        self.raw_encoder[0] = msg
 
     def lmwheelCallback(self, msg):
-        self.raw_encoder[1] = msg.data
+        self.raw_encoder[1] = msg
 
     def lbwheelCallback(self, msg):
-        self.raw_encoder[1] = msg.data
+        self.raw_encoder[2] = msg
 
     def rfwheelCallback(self, msg):
-        self.raw_encoder[3] = -msg.data
+        self.raw_encoder[3] = msg
 
     def rmwheelCallback(self, msg):
-        self.raw_encoder[4] = -msg.data
+        self.raw_encoder[4] = msg
 
     def rbwheelCallback(self, msg):
-        self.raw_encoder[4] = -msg.data
+        self.raw_encoder[5] = msg
 
     def lwheels(self):
-        print(self.raw_encoder)
-        enc = sum(self.raw_encoder[0:2]) / 2.0
+        enc = sum(self.raw_encoder[0:2]) / 3 
 
         if (enc < self.encoder_low_wrap and self.prev_lencoder > self.encoder_high_wrap):
             self.lmult = self.lmult + 1
@@ -166,7 +169,7 @@ class OdomPublisher():
         self.prev_lencoder = enc
         
     def rwheels(self):
-        enc = sum(self.raw_encoder[3:5]) / 2
+        enc = sum(self.raw_encoder[3:5]) / 3 
 
         if(enc < self.encoder_low_wrap and self.prev_rencoder > self.encoder_high_wrap):
             self.rmult = self.rmult + 1

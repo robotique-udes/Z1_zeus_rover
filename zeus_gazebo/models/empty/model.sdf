@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="empty">
+      <static>1</static>
+      <link name='link'>
+        <collision name="collision">
+        <surface>
+          <friction>
+            <ode>
+              <mu>100</mu>
+              <mu2>50</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      </link>   
+  </model>
+</sdf>

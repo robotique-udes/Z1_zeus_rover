@@ -26,31 +26,11 @@
       <uri>model://sun</uri>
     </include>
 
-    <!--<include>
+    <include>
       <uri>model://curiosity_path</uri>
       <name>curiosity_path</name>
       <pose>-136.5 127 14.21 0 0 0</pose>
-    </include>-->
-
-    <include>
-      <uri>model://terrain</uri>
-      <name>terrain</name>
-      <pose>2 1 -.75 0 0 -1.575</pose>
     </include>
-
-
-    <include>
-      <uri>model://terrain</uri>
-      <name>terrain1</name>
-      <pose>-22.869 -11.08 -.75</pose>
-    </include>
-
-    <include>
-      <uri>model://terrain</uri>
-      <name>terrain2</name>
-      <pose>-21 13.09 -.70 .01 0 0</pose>
-    </include>
-
 
     <include>
       <uri>model://rockformation</uri>

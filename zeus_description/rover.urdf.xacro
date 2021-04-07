@@ -12,8 +12,8 @@
   <xacro:property name="wheel_radius" value="0.1" />
   <xacro:property name="wheel_width" value="0.1" />
   <xacro:property name="wheel_mass" value="1" />
-  <xacro:property name="wheel_mu1" value="0.5" />
-  <xacro:property name="wheel_mu2" value="0.5" />
+  <xacro:property name="wheel_mu1" value="0.2" />
+  <xacro:property name="wheel_mu2" value="3.0" />
   <xacro:property name="wheel_kp" value="10000000.0" />
   <xacro:property name="wheel_kd" value="1" />
 
@@ -203,7 +203,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_front_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_front_wheel">
@@ -246,7 +247,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_middle_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_middle_wheel">
@@ -289,7 +291,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="right_rear_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="right_rear_wheel">
@@ -332,7 +335,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_front_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_front_wheel">
@@ -375,7 +379,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_middle_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_middle_wheel">
@@ -418,7 +423,8 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
     <joint name="left_rear_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> 
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
     </joint>
   </transmission>
   <gazebo reference="left_rear_wheel">
@@ -474,6 +480,7 @@
         </noise>
       </camera>
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <robotNamespace>/zeus</robotNamespace>
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
         <cameraName>camera1</cameraName>
@@ -525,6 +532,7 @@
       <visualize>true</visualize>
       <topic>__default_topic__</topic>
       <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <robotNamespace>zeus</robotNamespace>
         <topicName>imu</topicName>
         <bodyName>imu_link</bodyName>
         <updateRateHZ>10.0</updateRateHZ>
@@ -538,10 +546,121 @@
     </sensor>
   </gazebo>
 
+  <!-- GPS -->
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <robotNamespace>zeus</robotNamespace>
+      <alwayson>true</alwayson>
+      <updateRate>1.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <frameId>base_link</frameId>
+      <topicName>navsat/fix</topicName>
+      <velocityTopicName>navsat/vel</velocityTopicName>
+      <referenceLatitude>51.47</referenceLatitude>
+      <referenceLongitude>-112.708168</referenceLongitude>
+      <referenceHeading>0</referenceHeading>
+      <referenceAltitude>0</referenceAltitude>
+      <!-- <drift>0.0001 0.0001 0.0001</drift> -->
+    </plugin>
+  </gazebo>
+
+  <!-- Stereo camera -->
+  <link name="stereo_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <link name="stereo_opt_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.05 0.05 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="stereo_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.13 -0.02 -0.29" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="stereo_link"/>
+  </joint>
+
+  <joint name="stereo_opt_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.0 0.0 0.0" rpy="-1.57 0 -1.57"/>
+    <parent link="stereo_link"/>
+    <child link="stereo_opt_link"/>
+  </joint>
+  
+  <!-- Stereo camera with depth -->
+  <gazebo reference="stereo_link">
+  <sensor name="stereo_depth_camera" type="depth">
+    <update_rate>20</update_rate>
+    <camera>
+      <horizontal_fov>1.047198</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.05</near>
+        <far>50</far>
+      </clip>
+    </camera>
+    <plugin name="stereo_depth_controller" filename="libgazebo_ros_openni_kinect.so">
+      <baseline>0.2</baseline>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1.0</updateRate>
+      <cameraName>zed</cameraName>
+      <imageTopicName>/zed/color/image_raw</imageTopicName>
+      <cameraInfoTopicName>/zed/color/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>/zed/depth/image_raw</depthImageTopicName>
+      <depthImageInfoTopicName>/zed/depth/camera_info</depthImageInfoTopicName>
+      <pointCloudTopicName>/zed/depth/points</pointCloudTopicName>
+      <frameName>stereo_opt_link</frameName>
+      <pointCloudCutoff>0.5</pointCloudCutoff>
+      <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+      <distortionK1>0.00000001</distortionK1>
+      <distortionK2>0.00000001</distortionK2>
+      <distortionK3>0.00000001</distortionK3>
+      <distortionT1>0.00000001</distortionT1>
+      <distortionT2>0.00000001</distortionT2>
+      <CxPrime>0</CxPrime>
+      <Cx>0</Cx>
+      <Cy>0</Cy>
+      <focalLength>0</focalLength>
+      <hackBaseline>0</hackBaseline>
+    </plugin>
+  </sensor>
+  </gazebo>
+
   <!-- Controllers -->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/</robotNamespace>
+      <robotNamespace>zeus</robotNamespace>
     </plugin>
   </gazebo>
 
