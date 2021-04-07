@@ -44,7 +44,6 @@ class OdomPublisher():
         self.encoder_max = -1000000000000
         self.encoder_low_wrap = (self.encoder_max - self.encoder_min) * 0.3 + self.encoder_min
         self.encoder_high_wrap = (self.encoder_max - self.encoder_min) * 0.7 + self.encoder_min
-        self.gear_box = 40
         
 
         # Init command loop 
@@ -144,16 +143,17 @@ class OdomPublisher():
         self.raw_encoder[1] = msg.data
 
     def rfwheelCallback(self, msg):
-        self.raw_encoder[3] = msg.data
+        self.raw_encoder[3] = -msg.data
 
     def rmwheelCallback(self, msg):
-        self.raw_encoder[4] = msg.data
+        self.raw_encoder[4] = -msg.data
 
     def rbwheelCallback(self, msg):
-        self.raw_encoder[4] = msg.data
+        self.raw_encoder[4] = -msg.data
 
     def lwheels(self):
-        enc = -sum(self.raw_encoder[0:2]) / 2
+        print(self.raw_encoder)
+        enc = sum(self.raw_encoder[0:2]) / 2.0
 
         if (enc < self.encoder_low_wrap and self.prev_lencoder > self.encoder_high_wrap):
             self.lmult = self.lmult + 1
@@ -165,7 +165,7 @@ class OdomPublisher():
         self.prev_lencoder = enc
         
     def rwheels(self):
-        enc = -sum(self.raw_encoder[3:5]) / 2
+        enc = sum(self.raw_encoder[3:5]) / 2
 
         if(enc < self.encoder_low_wrap and self.prev_rencoder > self.encoder_high_wrap):
             self.rmult = self.rmult + 1
