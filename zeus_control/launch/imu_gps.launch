@@ -4,7 +4,9 @@
 
   <!-- Launch imu filter -->
   <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
-   <param name="_use_mag" value="false" />
+   <param name="use_mag" value="false" />
+   <param name="remove_gravity_vector" value="true" />
+   <param name="publish_tf" value="false" />
   </node>
 
   <!-- Launch imu -->
@@ -14,9 +16,10 @@
   
   <!-- Launch gps -->
   <!-- Do not forget to give access to the port : sudo chmod 666 /dev/ttyTHS1 -->
-  <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="imu_node" output="screen">
-  <param name="_port" value="/dev/ttyTHS1" />
-  <param name="_baud" value="115200" />
+  <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="nmea_serial_driver" output="screen"> 
+    <param name="port" value="/dev/ttyTHS1" />
+    <param name="baud" value="115200" />
   </node>
-  
+
+  <include file="$(find zeus_description)/tf_tree.launch" />    
 </launch>
