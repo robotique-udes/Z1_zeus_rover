@@ -112,7 +112,7 @@ ekf_se_map:
                 true, true, true]
   imu0_queue_size: 50
   imu0_nodelay: false
-  imu0_differential: false
+  imu0_differential: true
   imu0_relative: true
 
   use_control: false
