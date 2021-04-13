@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<launch>
+
+<node pkg="zeus_control" name="pan_tilt_control" type="pan_tilt_joy.py" respawn="false" output="screen">
+	</node>
+</launch>
