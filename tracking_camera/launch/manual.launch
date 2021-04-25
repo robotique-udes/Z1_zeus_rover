@@ -1,9 +1,0 @@
-<?xml version='1.0'?>
-<launch>
-
-<include file="$(find tracking_camera)/launch/motors.launch"/>
-
-<node pkg="tracking_camera" name="pan_tilt_control" type="joy_control.py" respawn="false" output="screen">
-	</node>
-
-</launch>
