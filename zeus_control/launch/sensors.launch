@@ -25,5 +25,5 @@
   <node pkg="zeus_control" type="odom_publisher.py" name="odom_publisher_node" output="screen">
   </node>
 
-  <include file="$(find zeus_description)/tf_tree.launch" />    
+  <include file="$(find zeus_description)/launch/tf_tree.launch" />    
 </launch>
