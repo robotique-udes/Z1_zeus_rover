@@ -19,7 +19,7 @@ The control structure goes from joystick signals to motor speed commands.
 #### arduino
 This folder contains the arduino code to control the pan tilt system for the cameras. It receives commands through ROS serial and moves accordingly.
 
-### config
+#### config
 This folder contains multiple configuration files for teleop configuration, sensor parameters, sensor fusion parameters, as well as our interface configuration file in rqt.
 
 <img src="imgs/interface.png" width="800">
@@ -27,9 +27,6 @@ This folder contains multiple configuration files for teleop configuration, sens
 
 #### launch
 This folder has the necessary launch files to run the teleop, the sensors and the user interface.
-
-#### meshes
-This folder has all of the exported STL files of the robot for the simulation. These are referenced to in the URDF file.
 
 #### src
 This folder has all the python files. 
