@@ -42,7 +42,7 @@ This folder has all the python files.
 
 - `twist2motor_cmd.py` subscribes to twist messages and outputs 6 motor commands accordingly. Multiple parameters can be tuned by the user to control the rover. 
 
-<img src="imgs/teleop-param.png" width="400">
+<img src="imgs/teleop-param.png" width="600">
 
 
 
