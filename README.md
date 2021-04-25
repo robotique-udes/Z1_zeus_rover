@@ -47,10 +47,6 @@ This package contains our rover description to be simulated in Gazebo.
 
 This package contains the code to launch our simulation as well as the worlds we use.
 
-### zeus_moveit_config
-
-This package contains the moveit configuration for our robot arm.
-
 ### zeus_navigation
 
 This package contains the code to configure and launch move base for our rover.
