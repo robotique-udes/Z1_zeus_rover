@@ -115,6 +115,7 @@ class OdomPublisher():
         quaternion.y = 0.0
         quaternion.z = sin( self.th / 2 )
         quaternion.w = cos( self.th / 2 )
+        # # No need to publish transform if we use robot_localization
         # self.odomBroadcaster.sendTransform(
         #     (self.x, self.y, 0),
         #     (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
