@@ -1,8 +1,19 @@
-zeus_rover
 
-Doxygen documentation : https://robotique-udes.github.io/zeus_rover/
+# zeus_rover
 
-Installation :
+This repository contains all the code necessary for our rover Zeus, which will participate to the 2021 CIRC competition.
+
+
+<!-- ![](imgs/logo.jpg) -->
+<img src="imgs/logo.jpg" width="250">
+
+## Requirements
+
+- Ubuntu 18.04
+- ROS Melodic
+
+
+## Installation :
 ```
 cd <your_catkin_ws>/src
 git clone https://github.com/robotique-udes/zeus_rover.git
@@ -10,35 +21,44 @@ cd zeus_rover
 catkin_make
 ```
 
-To use the husky simulation :
+## Packages
 
-Install dependencies
-```
-sudo apt-get install ros-melodic-realsense2*
-```
+![](imgs/rover.png)
 
-Launch simulator and robot model
-```
-roslaunch zeus_gazebo husky.launch
-```
+This repository is divided in several ROS packages. Each package is briefly described below and has its own readme file with more details.
 
-In another terminal, launch control nodes and interface
-```
-roslaunch zeus_control teleop.launch
-```
+### ros_talon
 
-The robot can be controlled using the teleop_twist_keyboard
-```
----------------------------
-Moving around:
-   u    i    o
-   j    k    l
-   m    ,    .
+This package is used to control our motors with the talon srx drive. This package was cloned from [this repository](https://github.com/jtdevs/ros_talon) and slightly modified for our needs.
 
-q/z : increase/decrease max speeds by 10%
-w/x : increase/decrease only linear speed by 10%
-e/c : increase/decrease only angular speed by 10%
-anything else : stop
+### zeus_arm
 
-CTRL-C to quit
-```
+This package contains all the code necessary to control our robotic arm, both in simulation and the real arm. There are two available teleoperation modes: joint control and cartesian control. 
+
+### zeus_control
+
+This package contains all the code necessary to control our rover, including the low-level control, the teleoperation stack, some sensor drivers, and pan-tilt camera control.
+
+### zeus_description
+
+This package contains our rover description to be simulated in Gazebo.
+
+### zeus_gazebo
+
+This package contains the code to launch our simulation as well as the worlds we use.
+
+### zeus_moveit_config
+
+This package contains the moveit configuration for our robot arm.
+
+### zeus_navigation
+
+This package contains the code to configure and launch move base for our rover.
+
+### zeus_science
+
+This package contains the code to control our land sampling system.
+
+
+
+In the future, our Doxygen documentation will be here: https://robotique-udes.github.io/zeus_rover/
