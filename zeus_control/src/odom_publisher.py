@@ -40,9 +40,8 @@ class OdomPublisher():
         self.base_frame_id = 'base_link' # the name of the base frame of the robot
         self.odom_frame_id = 'odom' # the name of the odometry reference frame
 
-        ####Tochange###
-        self.encoder_max = 10000000000000
-        self.encoder_min = -10000000000000 #6045 ticks/turn
+        self.encoder_min = 1000000000000 #6045 ticks/turn
+        self.encoder_max = -1000000000000
         self.encoder_low_wrap = (self.encoder_max - self.encoder_min) * 0.3 + self.encoder_min
         self.encoder_high_wrap = (self.encoder_max - self.encoder_min) * 0.7 + self.encoder_min
         
