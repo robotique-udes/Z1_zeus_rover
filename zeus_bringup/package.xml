@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>zeus_control</name>
+  <name>zeus_bringup</name>
   <version>0.0.0</version>
   <description>The zeus_bringup package</description>
 
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/zeus_control</url> -->
+  <!-- <url type="website">http://wiki.ros.org/zeus_bringup</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
