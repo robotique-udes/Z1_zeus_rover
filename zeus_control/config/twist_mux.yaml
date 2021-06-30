@@ -1,5 +1,5 @@
 topics:
-- name    : teleop_twist_keyboard
+- name    : teleop_twist
   topic   : cmd_vel
   timeout : 0.5
   priority: 1

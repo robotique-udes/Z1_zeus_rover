@@ -29,8 +29,10 @@ class LowLevelControlNode():
         '''
         rospy.init_node('twist2cmd', anonymous=False)
         rospy.on_shutdown(self.on_shutdown)
-        self.l_cmd = 0
-        self.r_cmd = 0
+        self.l_cmd_center = 0
+        self.r_cmd_center = 0
+        self.l_cmd_outer = 0
+        self.r_cmd_outer = 0
         self.last_cmd = [0, 0, 0, 0, 0, 0]
         self.last_cmd_time = [rospy.get_rostime().to_sec()]*6
 
@@ -52,8 +54,9 @@ class LowLevelControlNode():
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
         self.ddr.add_variable("linear_gain", "float", 0.5, 0, 2)
         self.ddr.add_variable("angular_gain", "float", -4, -8, 8)
-        self.ddr.add_variable("max_motor_cmd", "int", 60, 1, 100)
+        self.ddr.add_variable("max_motor_cmd", "int", 75, 1, 100)
         self.ddr.add_variable("max_accel", "float", 100, 1, 300)
+        self.ddr.add_variable("outer_wheels_rotation_gain", "float", 1.1, 1.0, 1.5)
 
         # Individual gains for wheels
         self.ddr.add_variable("wheel_1_gain", "float", 1.0, -2.0, 2.0)
@@ -103,12 +106,16 @@ class LowLevelControlNode():
             Twist message
         '''
         # Send same command to all motors of same side
-        l_cmd = msg.linear.x*75*self.linear_gain + msg.angular.z*30*self.angular_gain
-        r_cmd = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain
+        l_cmd_center = msg.linear.x*75*self.linear_gain + msg.angular.z*30*self.angular_gain
+        r_cmd_center = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain
+        l_cmd_outer = msg.linear.x*75*self.linear_gain + msg.angular.z*30*self.angular_gain*self.outer_wheels_rotation_gain
+        r_cmd_outer = msg.linear.x*75*self.linear_gain - msg.angular.z*30*self.angular_gain*self.outer_wheels_rotation_gain
 
-        # Limit speed at 60%
-        self.l_cmd = self.limit_speed(l_cmd, max_val=self.max_motor_cmd)
-        self.r_cmd = self.limit_speed(r_cmd, max_val=self.max_motor_cmd)
+        # Limit speed 
+        self.l_cmd_center = self.limit_speed(l_cmd_center, max_val=self.max_motor_cmd)
+        self.r_cmd_center = self.limit_speed(r_cmd_center, max_val=self.max_motor_cmd)
+        self.l_cmd_outer = self.limit_speed(l_cmd_outer, max_val=self.max_motor_cmd)
+        self.r_cmd_outer = self.limit_speed(r_cmd_outer, max_val=self.max_motor_cmd)
 
 
     def limit_speed(self, cmd, max_val=60):
@@ -160,22 +167,24 @@ class LowLevelControlNode():
         Publishes commands
         '''
         # Left wheels
-        self.m1_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_1_gain, max_val=100), 0))
-        self.m3_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_3_gain, max_val=100), 2))
-        self.m5_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd*self.wheel_5_gain, max_val=100), 4))
+        self.m1_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_outer*self.wheel_1_gain, max_val=100), 0))
+        self.m3_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_center*self.wheel_3_gain, max_val=100), 2))
+        self.m5_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_outer*self.wheel_5_gain, max_val=100), 4))
         
         # Right wheels
-        self.m2_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_2_gain, max_val=100), 1))
-        self.m4_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_4_gain, max_val=100), 3))
-        self.m6_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd*self.wheel_6_gain, max_val=100), 5))
+        self.m2_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_outer*self.wheel_2_gain, max_val=100), 1))
+        self.m4_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_center*self.wheel_4_gain, max_val=100), 3))
+        self.m6_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_outer*self.wheel_6_gain, max_val=100), 5))
 
 
     def on_shutdown(self):
         '''
         Set commands to 0 at shutdown
         '''
-        self.l_cmd = 0
-        self.r_cmd = 0
+        self.l_cmd_center = 0
+        self.r_cmd_center = 0
+        self.l_cmd_outer = 0
+        self.r_cmd_outer = 0
         self.send_cmd()
 
 
