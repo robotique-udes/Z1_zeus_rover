@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/camera_control.launch" />
+
+</launch>

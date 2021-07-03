@@ -2,6 +2,9 @@
 
 <launch>
 
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
   <!-- Send Twist commands from joystick -->
   <arg name="joy_config" default="1" />
   <arg name="joy_dev" default="/dev/input/js0" />
