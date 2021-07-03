@@ -8,4 +8,7 @@
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/camera_control.launch" />
 
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/sensors.launch" />
+
 </launch>

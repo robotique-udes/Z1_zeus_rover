@@ -22,5 +22,5 @@
   <include file="$(find zeus_control)/launch/pan_tilt.launch" />
 
   <!-- launch cameras -->
-  <include file="$(find zeus_control)/launch/camera_prop.launch" />
+  <include file="$(find zeus_control)/launch/cameras_prop.launch" />
 </launch>
