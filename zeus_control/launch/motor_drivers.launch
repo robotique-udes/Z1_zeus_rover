@@ -4,10 +4,6 @@
 
   <arg name="simulation" default="false"/>
 
-  <!-- Launch low level controller -->
-  <node pkg="zeus_control" type="twist2motor_cmd.py" name="twist2cmd" output="screen">
-  </node>
-
   <group unless="$(arg simulation)">
     <!-- Launch socketcan bridge node -->
     <node pkg="socketcan_bridge" name="socketcan_bridge_node" type="socketcan_bridge_node">
