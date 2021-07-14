@@ -26,4 +26,24 @@
   <!-- Launch pan tilt control script -->
   <!-- <include file="$(find zeus_control)/launch/pan_tilt_joy.launch" /> -->
 
+  <node name="fix_translator" pkg="gps_common" type="fix_translator">
+    <!-- Translate from NavSatFix to GPSFix //-->
+      <remap from="/navsat_fix_in"  to="/fix"/>
+      <!-- <remap from="/gps_fix_out"    to="/YOUR_GPSFIX_TOPIC"/> -->
+  </node> 
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 1 base_link map 100" />
+
+  <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+    <param name="local_xy_frame" value="/map"/>
+    <param name="local_xy_origin" value="static_origin"/>
+    <rosparam param="local_xy_origins">
+        [{ name: static_origin,
+         latitude: 45.3718262, <!-- change this -->
+         longitude: -72.651232, <!-- change this -->
+         altitude: 129.69,
+         heading: 0.0}]
+    </rosparam>
+</node>
+
 </launch>

@@ -6,7 +6,7 @@
   <include file="$(find zeus_control)/launch/multi_master.launch" />
 
   <!-- launch cameras -->
-  <include file="$(find zeus_control)/launch/camera_control.launch" />
+  <include file="$(find zeus_control)/launch/cameras_control.launch" />
 
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/sensors.launch" />
