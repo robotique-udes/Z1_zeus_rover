@@ -53,6 +53,7 @@ class LowLevelControlNode():
         self.ddr = DDynamicReconfigure("twist2cmd")
 
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
+        self.ddr.add_variable("stop_timeout", "float", 0.5, 0.01, 2.0)
         self.ddr.add_variable("linear_gain", "float", 1, 0, 2)
         self.ddr.add_variable("angular_gain", "float", -4, -8, 8)
         self.ddr.add_variable("max_motor_cmd", "int", 100, 1, 100)
@@ -170,7 +171,7 @@ class LowLevelControlNode():
         '''
         Publishes commands
         '''
-        if self.last_twist_received + 0.5 > rospy.get_rostime().to_sec():
+        if self.last_twist_received + self.stop_timeout > rospy.get_rostime().to_sec():
             # Left wheels
             self.m1_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_outer*self.wheel_1_gain, max_val=100), 0))
             self.m3_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_center*self.wheel_3_gain, max_val=100), 2))
