@@ -50,11 +50,12 @@ class ZeusMonitorNode():
         '''
         rospy.init_node('zeus_monitor', anonymous=False)
         rospy.on_shutdown(self.on_shutdown)
-        self.light_msg = [0, 0, 0]
+        self.light_msg = Int32MultiArray()
+        self.light_msg.data = [0, 0, 0]
         self.twist = Twist()
 
         # Init publishers
-        self.light_pub = rospy.Publisher('/zeus_monitor/light_control', Int32, queue_size=10)
+        self.light_pub = rospy.Publisher('/zeus_monitor/light_control', Int32MultiArray, queue_size=10)
         self.buzz_pub = rospy.Publisher('/zeus_monitor/buzz', Bool, queue_size=10)
 
         # Subscribers 
@@ -132,36 +133,37 @@ class ZeusMonitorNode():
         '''
         # Check if communication with base station works
         masters = self.check_comm()
-        self.light_msg[0] = LIGHT_MODES['READY'] if len(masters) > 0 else LIGHT_MODES['ERROR']
+        self.light_msg.data[0] = LIGHT_MODES['READY'] if len(masters) > 0 else LIGHT_MODES['ERROR']
 
         # Check status of rover 
         moving = self.rover_is_moving()
         ready = self.check_nodes(ROVER_MOVEMENT_NODES)
         
         if moving:
-            should_buzz_rover = self.light_msg[1] == LIGHT_MODES['ERROR']
-            self.light_msg[1] = LIGHT_MODES['MOVING']
+            should_buzz_rover = self.light_msg.data[1] == LIGHT_MODES['ERROR']
+            self.light_msg.data[1] = LIGHT_MODES['MOVING']
         elif ready:
-            should_buzz_rover = self.light_msg[1] == LIGHT_MODES['ERROR']
-            self.light_msg[1] = LIGHT_MODES['READY']
+            should_buzz_rover = self.light_msg.data[1] == LIGHT_MODES['ERROR']
+            self.light_msg.data[1] = LIGHT_MODES['READY']
         else:
-            self.light_msg[1] = LIGHT_MODES['ERROR']
+            self.light_msg.data[1] = LIGHT_MODES['ERROR']
 
         # Check status of rover arm
         moving = self.arm_is_moving()
         ready = self.check_nodes(ARM_MOVEMENT_NODES)
         if moving:
-            should_buzz_arm = self.light_msg[2] == LIGHT_MODES['ERROR']
-            self.light_msg[2] = LIGHT_MODES['MOVING']
+            should_buzz_arm = self.light_msg.data[2] == LIGHT_MODES['ERROR']
+            self.light_msg.data[2] = LIGHT_MODES['MOVING']
         elif ready:
-            should_buzz_arm = self.light_msg[2] == LIGHT_MODES['ERROR']
-            self.light_msg[2] = LIGHT_MODES['READY']
+            should_buzz_arm = self.light_msg.data[2] == LIGHT_MODES['ERROR']
+            self.light_msg.data[2] = LIGHT_MODES['READY']
         else:
-            self.light_msg[2] = LIGHT_MODES['ERROR']
+            self.light_msg.data[2] = LIGHT_MODES['ERROR']
 
         # Publish messages
         self.light_pub.publish(self.light_msg)
         self.buzz_pub.publish(should_buzz_arm or should_buzz_rover)
+        print("publish")
 
 
     def check_comm(self):
@@ -175,9 +177,11 @@ class ZeusMonitorNode():
             Master uris excluding local machines
         '''
         service_name = '/master_discovery/list_masters'
-        rospy.wait_for_service(service_name)
         masters = []
+        print("here")
         try:
+            # rospy.wait_for_service(service_name, rospy.Duration(5))
+            masters = []
             list_masters = rospy.ServiceProxy(service_name, DiscoverMasters)
             response = list_masters()
             for master in response.masters:
