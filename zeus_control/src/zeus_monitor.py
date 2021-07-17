@@ -25,9 +25,9 @@ from multimaster_msgs_fkie.srv import DiscoverMasters
 from ddynamic_reconfigure_python.ddynamic_reconfigure import DDynamicReconfigure
 
 
-LIGHT_MODES = {'ERROR': 0,
-               'READY': 1,
-               'MOVING': 2}
+LIGHT_MODES = {'ERROR': 0,  # OFF
+               'READY': 2,  # ON
+               'MOVING': 1} # FLASH
 
 ROVER_MOVEMENT_NODES = ['/joy_node',
                         '/teleop_twist_joy',
@@ -36,7 +36,9 @@ ROVER_MOVEMENT_NODES = ['/joy_node',
                         '/socketcan_bridge_node']
 
 # TODO
-ARM_MOVEMENT_NODES = []
+ARM_MOVEMENT_NODES = ['/arm_node',
+                      '/pose_teleop',
+                      '/joy_node_arm']
 
 LOCAL_HOSTS = ['http://192.168.1.31:11611',
                'http://192.168.1.32:11611',
@@ -138,6 +140,8 @@ class ZeusMonitorNode():
         # Check status of rover 
         moving = self.rover_is_moving()
         ready = self.check_nodes(ROVER_MOVEMENT_NODES)
+        should_buzz_arm = False
+        should_buzz_rover = False
         
         if moving:
             should_buzz_rover = self.light_msg.data[1] == LIGHT_MODES['ERROR']
@@ -163,7 +167,6 @@ class ZeusMonitorNode():
         # Publish messages
         self.light_pub.publish(self.light_msg)
         self.buzz_pub.publish(should_buzz_arm or should_buzz_rover)
-        print("publish")
 
 
     def check_comm(self):
@@ -178,7 +181,6 @@ class ZeusMonitorNode():
         '''
         service_name = '/master_discovery/list_masters'
         masters = []
-        print("here")
         try:
             # rospy.wait_for_service(service_name, rospy.Duration(5))
             masters = []
@@ -218,8 +220,8 @@ class ZeusMonitorNode():
         ----------
         moving: Bool
         '''
-        moving_linear = self.twist.linear.x < 0.01 and self.twist.linear.x > -0.01
-        moving_angular = self.twist.angular.z < 0.01 and self.twist.angular.z > -0.01
+        moving_linear = self.twist.linear.x > 0.01 and self.twist.linear.x < -0.01
+        moving_angular = self.twist.angular.z > 0.01 and self.twist.angular.z < -0.01
         return moving_angular or moving_linear
 
 

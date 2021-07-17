@@ -177,7 +177,7 @@ class LowLevelControlNode():
             self.m3_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_center*self.wheel_3_gain, max_val=100), 2))
             self.m5_pub.publish(self.limit_accel(self.limit_speed(self.l_cmd_outer*self.wheel_5_gain, max_val=100), 4))
             
-            # Right wheels
+            # # Right wheels
             self.m2_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_outer*self.wheel_2_gain, max_val=100), 1))
             self.m4_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_center*self.wheel_4_gain, max_val=100), 3))
             self.m6_pub.publish(self.limit_accel(self.limit_speed(self.r_cmd_outer*self.wheel_6_gain, max_val=100), 5))

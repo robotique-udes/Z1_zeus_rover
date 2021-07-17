@@ -39,9 +39,9 @@
     <param name="local_xy_origin" value="static_origin"/>
     <rosparam param="local_xy_origins">
         [{ name: static_origin,
-         latitude: 45.3718262, <!-- change this -->
-         longitude: -72.651232, <!-- change this -->
-         altitude: 129.69,
+         latitude: 45.405908, <!-- change this -->
+         longitude: -72.769954, <!-- change this -->
+         altitude: 10.0,
          heading: 0.0}]
     </rosparam>
 </node>

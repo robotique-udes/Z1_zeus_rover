@@ -11,4 +11,6 @@
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/sensors.launch" />
 
+  <node pkg="zeus_control" type="zeus_monitor.py" name="zeus_monitor">
+
 </launch>

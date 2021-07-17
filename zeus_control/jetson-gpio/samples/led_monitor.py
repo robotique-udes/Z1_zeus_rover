@@ -7,9 +7,9 @@ import RPi.GPIO as GPIO
 import time
 
 
-LIGHT_MODES = { 'ERROR':    0,
-                'READY':    1,
-                'MOVING':   2}
+LIGHT_MODES = { 'OFF':    0,
+                'FLASH':    1,
+                'ON':   2}
 
 LIGHT_PIN = {   'GREEN' :   26,
                 'YELLOW' :  20,
@@ -52,13 +52,13 @@ class LedMonitor():
         color = 'GREEN'
         for color in LIGHT_MESSAGE.keys():
             
-            if self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['ERROR']:
+            if self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['ON']:
                 GPIO.output(LIGHT_PIN[color], GPIO.LOW)
                 self.light_current[LIGHT_MESSAGE[color]] = GPIO.LOW
-            elif self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['READY']:
+            elif self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['FLASH']:
                 self.light_current[LIGHT_MESSAGE[color]] ^= GPIO.HIGH
                 GPIO.output(LIGHT_PIN[color], self.light_current[LIGHT_MESSAGE[color]])
-            elif self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['MOVING']:
+            elif self.light_msg[LIGHT_MESSAGE[color]] == LIGHT_MODES['OFF']:
                 GPIO.output(LIGHT_PIN[color], GPIO.HIGH)
                 self.light_current[LIGHT_MESSAGE[color]] = GPIO.HIGH
             

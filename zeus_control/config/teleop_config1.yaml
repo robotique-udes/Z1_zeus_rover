@@ -11,11 +11,11 @@
 
 # Set stick or trigger responsible for forward / backward movement
 axis_linear: 1  # Left thumb stick vertical
-scale_linear: 0.5
+scale_linear: 0.25
 scale_linear_turbo: 2.0
 
 axis_angular: 0  # Left thumb stick horizontal
-scale_angular: 0.4
+scale_angular: 0.2
 
 # Avalable options for buttons:
 # 0: A

@@ -19,7 +19,7 @@
   <include file="$(find zeus_control)/launch/motor_drivers.launch" />
 
   <!-- Launch pan tilt drivers -->
-  <include file="$(find zeus_control)/launch/pan_tilt.launch" />
+  <!-- <include file="$(find zeus_control)/launch/pan_tilt.launch" /> -->
 
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/cameras_prop.launch" />
