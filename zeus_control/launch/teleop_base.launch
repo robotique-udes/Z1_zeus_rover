@@ -24,7 +24,7 @@
   </node>
 
   <!-- Launch pan tilt control script -->
-  <!-- <include file="$(find zeus_control)/launch/pan_tilt_joy.launch" /> -->
+  <include file="$(find zeus_control)/launch/pan_tilt_joy.launch" />
 
   <node name="fix_translator" pkg="gps_common" type="fix_translator">
     <!-- Translate from NavSatFix to GPSFix //-->
@@ -44,6 +44,14 @@
          altitude: 10.0,
          heading: 0.0}]
     </rosparam>
-</node>
+  </node>
+
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+  <node name="mapviz" pkg="mapviz" type="mapviz"/>
+
+  <!-- For the google map in mapviz -->
+  <!-- sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy -->
+
+  <!-- rosbag record -e "(.*)ros_talon(.*)" /usb_cam_ctrl_0/image_raw/compressed /fix -->
 
 </launch>
