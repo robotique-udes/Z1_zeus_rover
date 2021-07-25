@@ -32,19 +32,22 @@
       <!-- <remap from="/gps_fix_out"    to="/YOUR_GPSFIX_TOPIC"/> -->
   </node> 
 
-  <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 1 base_link map 100" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 1 base_link map 100" />
 
   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
     <param name="local_xy_frame" value="/map"/>
     <param name="local_xy_origin" value="static_origin"/>
     <rosparam param="local_xy_origins">
         [{ name: static_origin,
-         latitude: 45.405908, <!-- change this -->
-         longitude: -72.769954, <!-- change this -->
+         latitude: 45.405908,
+         longitude: -72.769954,
          altitude: 10.0,
          heading: 0.0}]
     </rosparam>
-  </node>
+  </node> -->
+
+  <!-- Launch heading publisher -->
+  <include file="$(find zeus_control)/launch/imu.launch" />
 
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
   <node name="mapviz" pkg="mapviz" type="mapviz"/>
