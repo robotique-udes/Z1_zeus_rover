@@ -11,7 +11,7 @@
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/sensors.launch" />
 
-  <include file="(find zeus_control)/launch/pan_tilt.launch" />
+  <include file="$(find zeus_control)/launch/pan_tilt.launch" />
 
   <!-- python catkin_ws/src/zeus_rover/zeus_control/jetson-gpio/samples/led_monitor.py -->
 
