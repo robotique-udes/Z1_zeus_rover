@@ -52,12 +52,12 @@ class MotorsMonitorNode():
         self.ddr = DDynamicReconfigure("motors_monitor")
 
         # Add variables to ddr(name, description, default value, min, max, edit_method)        
-        self.ddr.add_variable("temperature_max", "float", 100.0, -10.0, 100.0)
-        self.ddr.add_variable("temperature_min", "float", -10.0, -10.0, 100.0)
-        self.ddr.add_variable("voltage_max", "float", 100.0, -10.0, 100.0)
-        self.ddr.add_variable("voltage_min", "float", -10.0, -10.0, 100.0)
-        self.ddr.add_variable("current_max", "float", 100.0, -10.0, 100.0)
-        self.ddr.add_variable("current_min", "float", -10.0, -10.0, 100.0)
+        self.ddr.add_variable("temperature_max", "float", 40.0, 0.0, 100.0)
+        self.ddr.add_variable("temperature_min", "float", 10.0, -10.0, 100.0)
+        self.ddr.add_variable("voltage_max", "float", 24.0, 0.0, 50.0)
+        self.ddr.add_variable("voltage_min", "float", 13.0, 0.0, 24.0)
+        self.ddr.add_variable("current_max", "float", 20.0, 10.0, 30.0)
+        self.ddr.add_variable("current_min", "float", -1.0, -10.0, 100.0)
         
         # Start Server
         self.ddr.start(self.dynamic_reconfigure_callback)
@@ -100,9 +100,9 @@ class MotorsMonitorNode():
         motor_nb: Int
             motor ID 
         '''
-        self.motors_voltage[motor_nb] = msg.Temperature
-        self.motors_temperature[motor_nb] = msg.OutputCurrent
-        self.motors_current[motor_nb] = msg.BusVoltage
+        self.motors_temperature[motor_nb] = msg.Temperature
+        self.motors_current[motor_nb] = msg.OutputCurrent
+        self.motors_voltage[motor_nb] = msg.BusVoltage
 
 
     def monitor_data_callback(self, evt):
