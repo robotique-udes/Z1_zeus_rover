@@ -5,7 +5,7 @@
 # $4=pic3
 
 # Assembles a Hugin .pto project file using equirectangular projection.
-pto_gen -o $1'/panorama.pto' -p 1 -f 60 $2 $3 $4 $5 $6
+pto_gen -o $1'/panorama.pto' -p 1 -f 60 $2 $3 $4 $5 $6 $7 $8 $9 
 
 # Control point detector for hugin.
 cpfind --multirow --celeste -o $1'/panorama.pto' $1'/panorama.pto'
