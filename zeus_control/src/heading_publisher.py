@@ -62,11 +62,13 @@ class HeadingPublisher():
     def timerCallback(self, evt):
         self.gps_out.header = self.gps_in.header
         self.gps_out.header.stamp = rospy.Time.now()
-        self.gps_out.latitude = self.gps_in.latitude
-        self.gps_out.longitude = self.gps_in.longitude
+        self.gps_out.latitude = 51.4675932
+        self.gps_out.longitude = -112.7060198
+        # self.gps_out.latitude = self.gps_in.latitude
+        # self.gps_out.longitude = self.gps_in.longitude
         self.gps_out.altitude = self.gps_in.altitude
         self.gps_out.roll, self.gps_out.pitch, self.gps_out.track  = self.quat2yaw(self.imu.orientation)
-        self.dip = self.gps_out.track
+        # self.dip = self.gps_out.track
         self.gpsPub.publish(self.gps_out)
 
     def quat2yaw(self, quat):

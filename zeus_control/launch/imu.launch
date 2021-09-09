@@ -5,9 +5,10 @@
         <remap from="/imu/data" to="/imu/data_out"/>
         <param name="do_bias_estimation" value="true"/>
         <param name="do_adaptive_gain" value="true"/>
-        <param name="use_mag" value="false"/>
+        <param name="use_mag" value="true"/>
         <param name="gain_acc" value="0.01"/>
         <param name="gain_mag" value="0.01"/> 
+        <param name="publish_debug_topics" value="true" />
     </node>
 
     <node pkg="zeus_control" type="heading_publisher.py" name="heading_publisher" output="screen">

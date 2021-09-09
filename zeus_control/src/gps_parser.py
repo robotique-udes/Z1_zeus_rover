@@ -22,7 +22,7 @@ import numpy as np
 from sensor_msgs.msg import NavSatFix
 
 
-GPS_PATH = 'gps_coords.csv'
+GPS_PATH = 'config/gps_coords.csv'
 
 class GPSParserNode():
     def __init__(self):
