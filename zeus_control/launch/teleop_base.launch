@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
+  <!-- Send Twist commands from joystick -->
+  <arg name="joy_config" default="1" />
+  <arg name="joy_dev" default="/dev/input/js1" />
+  <arg name="config_filepath" default="$(find zeus_control)/config/teleop_config$(arg joy_config).yaml" />
+  <arg name="joy_topic" default="joy" />
+  
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="dev" value="$(arg joy_dev)" />
+    <param name="deadzone" value="0.3" />
+    <param name="autorepeat_rate" value="20" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
+    <rosparam command="load" file="$(arg config_filepath)" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
+  <!-- Launch pan tilt control script -->
+  <include file="$(find zeus_control)/launch/pan_tilt_joy.launch" />
+
+  <node name="fix_translator" pkg="gps_common" type="fix_translator">
+    <!-- Translate from NavSatFix to GPSFix //-->
+      <remap from="/navsat_fix_in"  to="/fix"/>
+      <!-- <remap from="/gps_fix_out"    to="/YOUR_GPSFIX_TOPIC"/> -->
+  </node> 
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 1 base_link map 100" />
+
+  <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+    <param name="local_xy_frame" value="/map"/>
+    <param name="local_xy_origin" value="static_origin"/>
+    <rosparam param="local_xy_origins">
+        [{ name: static_origin,
+         latitude: 51.453542,
+         longitude: -112.714981,
+         altitude: 10.0,
+         heading: 0.0}]
+    </rosparam>
+  </node>
+
+  <!-- Launch heading publisher -->
+  <include file="$(find zeus_control)/launch/imu.launch" />
+
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+  <node name="mapviz" pkg="mapviz" type="mapviz"/>
+
+  <!-- For the google map in mapviz -->
+  <!-- sudo docker run -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy -->
+
+  <!-- rosbag record -e "(.*)ros_talon(.*)" /usb_cam_ctrl_0/image_raw/compressed /fix /imu/data_out-->
+
+</launch>

@@ -46,26 +46,36 @@ class ScienceTeleopNode():
             Message from joystick
         '''
         cmd = Int16()
-        if msg.buttons[0]:
-            self.cmd.data = 1
-        elif msg.buttons[1]:
-            self.cmd.data = 2
-        elif msg.buttons[2]:
-            self.cmd.data = 3
-        elif msg.buttons[3]:
-            self.cmd.data = 4
-        elif msg.buttons[4]:
-            self.cmd.data = 5
-        elif msg.buttons[5]:
-            self.cmd.data = 6
-        elif msg.buttons[6]:
+        if msg.buttons[1]:
+            # Close top left
             self.cmd.data = 7
-        elif msg.buttons[7]:
+        elif msg.buttons[0] and msg.buttons[2]:
+            # Open top-left
             self.cmd.data = 8
-        elif msg.buttons[8]:
+        elif msg.buttons[0] and msg.buttons[3]:
+            # Open top-rght
+            self.cmd.data = 3
+        elif msg.buttons[4]:
+            # Close top-rght
+            self.cmd.data = 4
+        elif msg.buttons[0] and msg.buttons[5]:
+            # Open bottom-left
+            self.cmd.data = 1
+        elif msg.buttons[6]:
+            # Close bottom-left
+            self.cmd.data = 2
+        elif msg.buttons[7]:
+            # Up
             self.cmd.data = 9
-        elif msg.buttons[9]:
+        elif msg.buttons[8]:
+            # Down
             self.cmd.data = 10
+        elif msg.buttons[9]:
+            # Close bottom-right
+            self.cmd.data = 5
+        elif msg.buttons[0] and msg.buttons[10]:
+            # Open bottom-right
+            self.cmd.data = 6
         else:
             self.cmd.data = 0
 
