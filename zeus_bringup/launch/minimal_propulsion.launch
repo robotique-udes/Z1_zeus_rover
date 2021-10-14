@@ -23,4 +23,23 @@
 
   <!-- launch cameras -->
   <include file="$(find zeus_control)/launch/cameras_prop.launch" />
+
+  <!-- Send Twist commands from joystick -->
+  <arg name="joy_config" default="1" />
+  <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="config_filepath" default="$(find zeus_control)/config/teleop_config$(arg joy_config).yaml" />
+  <arg name="joy_topic" default="joy" />
+  
+  <node pkg="joy" type="joy_node" name="joy_node_propulsion">
+    <param name="dev" value="$(arg joy_dev)" />
+    <param name="deadzone" value="0.3" />
+    <param name="autorepeat_rate" value="20" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy_propolsion" type="teleop_node">
+    <rosparam command="load" file="$(arg config_filepath)" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
 </launch>
