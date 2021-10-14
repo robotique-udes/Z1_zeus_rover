@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
+  <!-- Setup twist mux -->
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find zeus_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="zeus_control/cmd_vel"/>
+  </node>
+
+  <!-- Launch low level controller -->
+  <node pkg="zeus_control" type="twist2motor_cmd.py" name="twist2cmd" output="screen">
+  </node>
+
+  <!-- Launch motor drivers -->
+  <include file="$(find zeus_control)/launch/motor_drivers.launch" />
+
+  <!-- Launch pan tilt drivers -->
+  <!-- <include file="$(find zeus_control)/launch/pan_tilt.launch" /> -->
+
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/cameras_prop.launch" />
+</launch>
