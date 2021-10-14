@@ -6,3 +6,11 @@ rosrun robot_upstart install --master http://192.168.1.XXX:11311 --job zeus_brin
 
 to remove service
 rosrun robot_upstart uninstall zeus_bringup
+
+in usr/sbin/zeus_bringup-start, comment 
+#export ROS_HOSTNAME=$(hostname)
+and add 
+export ROS_IP=192.168.1.XXX
+right under
+
+to update the launchfile, remove the service and reinstall it.
