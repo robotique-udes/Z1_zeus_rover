@@ -15,6 +15,6 @@
 
   <!-- python catkin_ws/src/zeus_rover/zeus_control/jetson-gpio/samples/led_monitor.py -->
 
-  <node pkg="zeus_control" type="zeus_monitor.py" name="zeus_monitor" />
+  <node pkg="zeus_control" type="zeus_monitor_minimal.py" name="zeus_monitor" />
 
 </launch>
