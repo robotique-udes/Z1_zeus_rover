@@ -41,5 +41,18 @@ This folder has all the python files.
 
 <img src="imgs/teleop-param.png" width="600">
 
+## Dependencies
+### ROS standard packages
+joy
+teleop_twist_joy
+image_transport_plugins
+swri_transform_util
+gps_common
+
+### Mapviz
+Mapviz is used to show rover's position and orientation on a satellite map. 
+To install and use it follow steps here
+
+
 
 

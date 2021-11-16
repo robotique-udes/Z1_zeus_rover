@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <arg name="simulation" default="false"/>
+
+  <group unless="$(arg simulation)">
+    <!-- Launch socketcan bridge node -->
+    <node pkg="socketcan_bridge" name="socketcan_bridge_node" type="socketcan_bridge_node">
+    </node>
+
+    <!-- Launch driver for each motor -->
+    <node pkg="ros_talon" type="direct_drive1" name="motor1" output="screen">  
+      <param name="motor_nb" value="1" />
+    </node>
+
+    <node pkg="ros_talon" type="direct_drive2" name="motor2" output="screen">
+      <param name="motor_nb" value="2" />
+    </node> 
+
+    <node pkg="ros_talon" type="direct_drive3" name="motor3" output="screen">
+      <param name="motor_nb" value="3" />
+    </node> 
+
+    <node pkg="ros_talon" type="direct_drive4" name="motor4" output="screen">
+      <param name="motor_nb" value="4" />
+    </node> 
+
+    <node pkg="ros_talon" type="direct_drive5" name="motor5" output="screen">
+      <param name="motor_nb" value="5" />
+    </node> 
+
+    <node pkg="ros_talon" type="direct_drive6" name="motor6" output="screen">
+      <param name="motor_nb" value="6" />
+    </node> 
+
+  </group>
+
+  <group if="$(arg simulation)">
+  
+    <node pkg="topic_tools" type="transform" name="transform1" output="screen"
+      args="/ros_talon1/motor_percent /zeus/left_front_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform2" output="screen"
+      args="/ros_talon2/motor_percent /zeus/right_front_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform3" output="screen"
+      args="/ros_talon3/motor_percent /zeus/left_middle_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform4" output="screen"
+      args="/ros_talon4/motor_percent /zeus/right_middle_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+ 
+    <node pkg="topic_tools" type="transform" name="transform5" output="screen"
+      args="/ros_talon5/motor_percent /zeus/left_rear_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+    
+    <node pkg="topic_tools" type="transform" name="transform6" output="screen"
+      args="/ros_talon6/motor_percent /zeus/right_rear_wheel_velocity_controller/command std_msgs/Float64 'float(m.data)'"
+      respawn="true"
+      respawn_delay="1">
+    </node>
+
+    <param name="/twist2cmd/twist2cmd/max_motor_cmd" value="6.0"/>
+    <param name="/twist2cmd/twist2cmd/angular_gain" value="-2.0"/>
+    <param name="/twist2cmd/twist2cmd/linear_gain" value="0.5"/>
+
+  </group>
+</launch>

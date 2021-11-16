@@ -1,0 +1,16 @@
+topics:
+- name    : teleop_twist
+  topic   : cmd_vel
+  timeout : 0.5
+  priority: 1
+
+- name    : nav
+  topic   : zeus_nav/cmd_vel
+  timeout : 0.5
+  priority: 2
+
+locks:
+- name    : e_stop
+  topic   : e_stop
+  timeout : 0.0
+  priority: 255

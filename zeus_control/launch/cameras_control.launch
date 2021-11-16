@@ -1,0 +1,26 @@
+<launch>
+  <arg name="exposure" default="10" />
+  <arg name="framerate" default="15" />
+  <node name="usb_cam_ctrl_0" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video0" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="usb_cam0" />
+    <param name="framerate" value="$(arg framerate)"/>
+    <param name="autoexposure" value="false" />
+    <param name="exposure" value="$(arg exposure)" />
+    <param name="io_method" value="mmap"/> 
+  </node> 
+
+  <node name="usb_cam_ctrl_1" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video1" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="usb_cam1" />
+    <param name="framerate" value="$(arg framerate)" />
+    <param name="io_method" value="mmap"/>
+  </node> 
+
+</launch>

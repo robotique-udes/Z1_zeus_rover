@@ -7,7 +7,7 @@
 
   <!-- Send Twist commands from joystick -->
   <arg name="joy_config" default="1" />
-  <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="joy_dev" default="/dev/input/js1" />
   <arg name="config_filepath" default="$(find zeus_control)/config/teleop_config$(arg joy_config).yaml" />
   <arg name="joy_topic" default="joy" />
   
