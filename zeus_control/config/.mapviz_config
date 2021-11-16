@@ -1,0 +1,39 @@
+capture_directory: ~
+fixed_frame: map
+target_frame: map
+fix_orientation: false
+rotate_90: true
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 801
+window_height: 587
+view_scale: 1.911916
+offset_x: 2266643
+offset_y: -1.043052e+07
+use_latest_transforms: true
+background: "#a0a0a4"
+displays:
+  - type: mapviz_plugins/tile_map
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      custom_sources:
+        - base_url: " http://localhost:8080/wmts/\ngm_layer/gm_grid/{level}/{x}/{y}.png"
+          max_zoom: 19
+          name: googlemaps
+          type: wmts
+      bing_api_key: ""
+      source: Stamen (terrain)
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /zeus/navsat/fix
+      color: "#ff0a02"
+      draw_style: points
+      position_tolerance: 0
+      buffer_size: 10
