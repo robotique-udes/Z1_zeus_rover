@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/cameras_control.launch" />
+
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/sensors.launch" />
+
+  <include file="$(find zeus_control)/launch/pan_tilt.launch" />
+
+  <!-- python catkin_ws/src/zeus_rover/zeus_control/jetson-gpio/samples/led_monitor.py -->
+
+  <node pkg="zeus_control" type="zeus_monitor_minimal.py" name="zeus_monitor" />
+
+</launch>

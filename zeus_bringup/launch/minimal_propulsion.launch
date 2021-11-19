@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+  <!-- launch multi master -->
+  <include file="$(find zeus_control)/launch/multi_master.launch" />
+
+  <!-- Setup twist mux -->
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find zeus_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="zeus_control/cmd_vel"/>
+  </node>
+
+  <!-- Launch low level controller -->
+  <node pkg="zeus_control" type="twist2motor_cmd.py" name="twist2cmd" output="screen">
+  </node>
+
+  <!-- Launch motor drivers -->
+  <include file="$(find zeus_control)/launch/motor_drivers.launch" />
+
+  <!-- Launch pan tilt drivers -->
+  <!-- <include file="$(find zeus_control)/launch/pan_tilt.launch" /> -->
+
+  <!-- launch cameras -->
+  <include file="$(find zeus_control)/launch/cameras_prop.launch" />
+
+  <!-- Send Twist commands from joystick -->
+  <arg name="joy_config" default="1" />
+  <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="config_filepath" default="$(find zeus_control)/config/teleop_config$(arg joy_config).yaml" />
+  <arg name="joy_topic" default="joy" />
+  
+  <node pkg="joy" type="joy_node" name="joy_node_propulsion">
+    <param name="dev" value="$(arg joy_dev)" />
+    <param name="deadzone" value="0.3" />
+    <param name="autorepeat_rate" value="20" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy_propolsion" type="teleop_node">
+    <rosparam command="load" file="$(arg config_filepath)" />
+    <remap from="joy" to="$(arg joy_topic)" />
+  </node>
+
+</launch>

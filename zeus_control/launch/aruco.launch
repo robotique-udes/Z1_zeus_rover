@@ -1,0 +1,7 @@
+<launch>
+  <node name="picture_node" pkg="zeus_control" type="scan_aruco.py" output="screen" >
+    <param name="image" value="/usb_cam/image_raw" />
+    <param name="gps" value="/nav/fix" />
+    <param name="path" value="/home/simon/zeus_pictures/" />
+  </node>
+</launch>
