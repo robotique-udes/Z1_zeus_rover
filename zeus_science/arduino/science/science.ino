@@ -61,38 +61,47 @@ void loop() {
         break;
         
       case 1: 
+      // open bottom left
         servo1.write(0);
         break;
       
       case 2:
+      // close bottom left
         servo1.write(175);
         break;
         
       case 3:
+      // open top right
         servo2.write(0);
         break;
         
       case 4:
+      // close top right
         servo2.write(175);
         break;
       
       case 5:
+      // close bottom right
         servo3.write(0);
         break;
         
       case 6:
+      // open bottom right
         servo3.write(175);
         break;
         
       case 7:
+      // close top left
         servo4.write(0);
         break;
         
       case 8:
+      // open top left
         servo4.write(175);
         break;
         
       case 9:
+      // up
         if (digitalRead(upPin)== LOW){
           digitalWrite(EnableStepper,LOW);
           // Set the spinning direction CW/CCW:
@@ -107,6 +116,7 @@ void loop() {
           }
           break;
       case 10:
+      // down
         if (digitalRead(downPin1)==LOW || digitalRead(downPin2)==LOW){
           digitalWrite(EnableStepper,LOW);
           // Set the spinning direction CW/CCW:
