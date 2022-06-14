@@ -36,20 +36,46 @@ center of the drive train when called.
 */
 
 #include <talon_bridge/talon.h>
+#include <ros/ros.h>
+#include <sstream>
 
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "ros_talon");
 	ros::NodeHandle n;
+    ros::NodeHandle nh("~");
 
-	std::string motor_nb_str;
-	motor_nb_str = ros::this_node::getName();
-	unsigned char motor_nb_c = motor_nb_str.back();
+    unsigned int id = nh.param("motor_id", 0);
+    char topic_nb = nh.param<std::string>("topic_nb", "\0").back();
+    
+    if (id == 0)
+    {
+        ROS_ERROR("motor_id not set");
+        ros::shutdown();
+    }
 
-	talon::TalonSRX talon(&n, motor_nb_c);
-	talon.setup(5, modePercentOutput, motor_nb_c);
+    if (topic_nb == '\0')
+    {
+        std::ostringstream oss;
+        oss << id;
+        std::string id_str = oss.str();
+        if (id_str.size() == 1)
+        {
+            topic_nb = id_str[0];
+            ROS_DEBUG_STREAM("topic_nb not set, using default value of motor_id: " << id);
+        }    
+        else
+        {
+            ROS_ERROR_STREAM("topic_nb not set, and motor_id [" << id << "] is longer than one char");
+            ros::shutdown();
+        }
+    }
+    
+	talon::TalonSRX talon(&n, static_cast<unsigned char>(topic_nb));
+	talon.setup(static_cast<unsigned char>(id), modePercentOutput, topic_nb);
 
-	ROS_WARN_STREAM("Motor ID 5 : " << motor_nb_c);
+    ROS_WARN_STREAM("Motor [ID: " << id << "] connected! Using topic postfix [" << topic_nb << "]");
+
 	ros::spin();
 	return 0;
 }
